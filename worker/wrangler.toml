@@ -1,0 +1,14 @@
+name = "threegpp-rf-graph"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[[kv_namespaces]]
+binding = "GRAPH_KV"
+id = "a598dea618484a3eb0c5fc696ef3edf3"
+
+[ai]
+binding = "AI"

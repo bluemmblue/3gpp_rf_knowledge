@@ -1,0 +1,244 @@
+:root {
+  --bg: #0f1420;
+  --panel: #161d2e;
+  --panel-2: #1e2739;
+  --border: #2b3550;
+  --text: #e7ecf5;
+  --text-muted: #9aa6bd;
+  --accent: #4f8cff;
+  --accent-2: #35c48c;
+  --symptom: #ff8a5c;
+  --danger: #ff5c5c;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+header h1 {
+  font-size: 18px;
+  margin: 0;
+  font-weight: 600;
+}
+
+header .sub {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+#search {
+  flex: 1;
+  min-width: 200px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.layer-toggle {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  align-items: center;
+}
+
+.issue-chips {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.issue-chip {
+  font-size: 12.5px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--symptom);
+  background: transparent;
+  color: var(--symptom);
+  margin: 0;
+}
+
+.issue-chip:hover { background: var(--symptom); color: #1a1206; }
+
+main {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+#cy {
+  flex: 1;
+  background: var(--bg);
+}
+
+#side {
+  width: 340px;
+  border-left: 1px solid var(--border);
+  padding: 16px;
+  overflow-y: auto;
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#side h2 {
+  font-size: 14px;
+  margin: 0 0 8px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.node-detail {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.node-detail .badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.node-detail .badge.symptom { background: var(--symptom); }
+.node-detail .spec-ref { color: var(--text-muted); font-size: 12px; margin-top: 6px; }
+.node-detail .unverified { color: var(--danger); font-size: 11px; }
+
+.node-detail .scenario {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 12.5px;
+}
+
+.node-detail .scenario ul {
+  margin: 6px 0 0;
+  padding-left: 16px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.node-detail .flow {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 12.5px;
+}
+
+.node-detail .flow pre {
+  margin: 6px 0 0;
+  padding: 8px 10px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: 'Consolas', 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text);
+}
+
+#ask-box textarea {
+  width: 100%;
+  min-height: 60px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  padding: 8px;
+  font-size: 13px;
+  resize: vertical;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  background: var(--accent);
+  color: #fff;
+  margin-top: 8px;
+}
+
+button.secondary {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+#ask-answer {
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin-top: 10px;
+}
+
+details {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+details summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+#admin-panel input, #admin-panel textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 13px;
+}
+
+#admin-panel textarea { min-height: 100px; resize: vertical; }
+
+#curate-result {
+  margin-top: 10px;
+  font-size: 12px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+  max-height: 240px;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+.warning { color: var(--symptom); font-size: 12px; margin-top: 6px; }

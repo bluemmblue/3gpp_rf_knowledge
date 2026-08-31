@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3GPP RF 지식 그래프</title>
+<link rel="stylesheet" href="/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>3GPP RF 지식 그래프</h1>
+    <span class="sub">망 → 단말 RF 프론트엔드 · 전력제어 / RACH</span>
+    <input id="search" type="text" placeholder="예: 약전계, RACH, PHR, TX Power ...">
+    <div class="layer-toggle">
+      <label><input type="checkbox" id="toggle-base" checked> 기반 레이어</label>
+      <label><input type="checkbox" id="toggle-application" checked> 응용 레이어(증상)</label>
+    </div>
+    <div class="issue-chips" id="issue-chips"></div>
+  </header>
+
+  <main>
+    <div id="cy"></div>
+    <aside id="side">
+      <div>
+        <h2>노드 정보</h2>
+        <div id="node-detail" class="node-detail">노드를 클릭하면 상세 정보가 표시됩니다.</div>
+      </div>
+
+      <div id="ask-box">
+        <h2>질의응답</h2>
+        <textarea id="ask-input" placeholder="예: 약전계일 때 tx power가 왜 올라가?"></textarea>
+        <button id="ask-btn">질문하기</button>
+        <div id="ask-answer"></div>
+      </div>
+
+      <details id="admin-panel">
+        <summary>관리자 모드 (데이터 큐레이션)</summary>
+        <label>ADMIN_TOKEN</label>
+        <input id="admin-token" type="password" placeholder="wrangler secret로 등록한 토큰">
+        <label>3GPP 텍스트 붙여넣기</label>
+        <textarea id="curate-text" placeholder="스펙 원문/요약 텍스트"></textarea>
+        <button id="curate-btn" class="secondary">추출</button>
+        <div id="curate-result"></div>
+        <button id="save-btn">검토 완료 → 저장</button>
+        <div class="warning">LLM 추출 결과는 저장 전 반드시 조항·내용을 직접 검증하세요.</div>
+      </details>
+    </aside>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
