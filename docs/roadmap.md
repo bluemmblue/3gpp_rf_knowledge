@@ -13,6 +13,6 @@ UE Capability(`UE-NR-Capability` 등)의 **스키마 자체는 3GPP 표준(공�
 
 ## 기타 확장 후보
 
-- 전력제어/RACH 외 도메인 확장: CA/EN-DC 밴드 조합, RRM 측정/핸드오버, NAS 절차 등
 - 검색 정확도 향상: 키워드 매칭 대신 임베딩 기반 유사도 검색(Vectorize) 도입
 - 데이터 규모 증가 시 KV 단일 blob → D1(SQL) 또는 KV 개별 키 구조로 전환
+- NAS 절차(등록/세션 관리 등) 도메인 추가

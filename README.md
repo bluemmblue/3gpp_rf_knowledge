@@ -87,7 +87,8 @@ RRC 상태/DRX/페이징, PUCCH/SRS 전력제어 및 SRS 심화, 안테나/MIMO(
       대시보드는 `worker/public/`에 있고 source of truth는 `data/seed-*.json`이므로 둘 다 불필요.
 - [x] `worker/graph-seed.json`은 이미 `.gitignore`에 포함되어 있고 git에 커밋된 적 없음을 확인.
 
-### 4. 향후 확장 (`docs/roadmap.md` 참고)
-- [ ] 디바이스 인스턴스 레이어: 칩셋/벤더별 실제 UE Capability 값 매핑 (3GPP 표준 스키마 위에 얹는 별도 레이어)
-- [ ] 검색을 키워드 매칭 → 임베딩 기반 유사도 검색(Vectorize)으로 고도화
-- [ ] 그래프 규모가 커지면 KV 단일 blob → D1(SQL) 전환 검토
+### 4. 향후 확장 (보류 — `docs/roadmap.md` 참고)
+실습 규모를 고려해 지금 구현하지 않고 로드맵으로만 유지한다.
+- 디바이스 인스턴스 레이어: 칩셋/벤더별 실제 UE Capability 값 매핑 (3GPP 표준 스키마 위에 얹는 별도 레이어)
+- 검색을 키워드 매칭 → 임베딩 기반 유사도 검색(Vectorize)으로 고도화
+- 그래프 규모가 커지면 KV 단일 blob → D1(SQL) 전환 검토
