@@ -1222,6 +1222,20 @@
                       "note":  "주파수 다이버시티로 특정 대역 페이딩에 의한 순간적 BLER 열화를 완화한다"
                   },
                   {
+                      "id":  "hop-edge-02",
+                      "from":  "hop-symptom-narrowband-fading-burst-errors",
+                      "to":  "hop-proc-freq-hopping",
+                      "relation":  "mitigated_by",
+                      "note":  "호핑이 정상 동작하면 협대역 페이딩의 영향이 여러 주파수로 분산되어 완화된다"
+                  },
+                  {
+                      "id":  "srs-e-throughput-drop-explained-by-sri-tpmi",
+                      "from":  "srs-symptom-ul-throughput-drop",
+                      "to":  "ant-nr-pusch-sri-tpmi-selection",
+                      "relation":  "explained_by",
+                      "note":  "SRS로 확보한 채널 정보가 부실하면 gNB의 SRI/TPMI 지시 자체가 최적이 아니게 되어 처리량이 떨어진다"
+                  },
+                  {
                       "id":  "ant-edge-05",
                       "from":  "ant-txrx-chain-notation",
                       "to":  "ant-max-mimo-layers-pusch",

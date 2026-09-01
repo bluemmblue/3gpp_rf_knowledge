@@ -1223,6 +1223,15 @@
                       "verified":  false
                   },
                   {
+                      "id":  "hop-symptom-narrowband-fading-burst-errors",
+                      "type":  "Symptom",
+                      "layer":  "application",
+                      "name_ko":  "특정 대역에서만 반복되는 상향링크 오류 (협대역 페이딩)",
+                      "name_en":  "Recurring UL Errors Confined to a Narrow Band",
+                      "description":  "전체적인 수신 신호 세기나 단말 송신 전력은 정상인데, 특정 RB 위치로 스케줄링될 때만 유독 디코딩 오류·재전송이 몰리고 다른 위치에서는 멀쩡한 증상이다. 좁은 주파수 구간에서만 채널이 깊게 꺼지는 주파수 선택적 페이딩이 원인인 경우가 많으며, 정상적으로는 주파수 호핑이 이 영향을 여러 위치로 분산시켜 평균 오류율을 낮춰준다. 그런데 호핑이 꺼져 있거나(RRC로 비활성화) 호핑 오프셋이 잘못 설정돼 매번 비슷한 대역으로만 홉이 도는 경우, 이 완화 효과가 사라져 특정 대역에서의 오류가 반복적으로 관측된다. 진단 시에는 오류가 발생한 슬롯들의 실제 할당 RB 위치가 매번 겹치는지, 호핑 관련 RRC 설정이 의도대로 켜져 있는지부터 확인한다.",
+                      "verified":  false
+                  },
+                  {
                       "id":  "ant-supported-srs-txport-switch",
                       "type":  "Parameter",
                       "layer":  "base",
