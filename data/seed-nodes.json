@@ -1201,6 +1201,28 @@
                       "verified":  false
                   },
                   {
+                      "id":  "ant-nr-pusch-sri-tpmi-selection",
+                      "type":  "Procedure",
+                      "layer":  "base",
+                      "name_ko":  "PUSCH 안테나 포트/프리코더 동적 지시 (SRI/TPMI)",
+                      "name_en":  "Dynamic PUSCH Antenna Port / Precoder Indication (SRI/TPMI)",
+                      "description":  "코드북 기반 상향링크 전송에서, gNB가 스케줄링 DCI(포맷 0_1)에 실어 보내는 SRI(SRS Resource Indicator)와 TPMI(precoding matrix indicator)로 이번 PUSCH를 어느 SRS 자원(=물리적 안테나 포트 조합)과 어떤 프리코딩 행렬로 보낼지 매 전송마다 지시한다. 단말은 지시받은 SRI가 가리키는 SRS 자원과 같은 안테나 포트로 PUSCH를 송신하므로, 결과적으로 매 스케줄링마다 실제 송신에 쓰이는 물리 안테나 포트 조합이 네트워크 지시에 따라 동적으로 바뀐다. 이는 LTE의 폐루프 Tx 안테나 선택과 목적은 같지만(더 좋은 경로로 상향링크를 보낸다), 안테나 하나를 고르는 이진 선택이 아니라 여러 SRS 안테나 포트 조합과 프리코더를 함께 지시한다는 점이 다르다. 이 지시의 근거가 되는 채널 정보 자체는 SRS 안테나 스위칭으로 확보된다.",
+                      "specRef":  "TS 38.214 §6.1.1.1 (코드북 기반 UL 전송, SRI/TPMI), TS 38.212 §7.3.1.1 (DCI format 0_1의 SRI/TPMI 필드)",
+                      "flow":  "단말이 SRS 안테나 스위칭으로 안테나별 SRS 전송 → gNB가 경로별 채널 추정 → DCI format 0_1의 SRI/TPMI 필드로 사용할 SRS 자원(안테나 포트)과 프리코더 지시 → 단말이 지시된 포트로 PUSCH 송신",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "hop-proc-freq-hopping",
+                      "type":  "Procedure",
+                      "layer":  "base",
+                      "name_ko":  "PUSCH/PUCCH 주파수 호핑",
+                      "name_en":  "PUSCH/PUCCH Frequency Hopping",
+                      "description":  "하나의 전송을 시간에 따라 서로 다른 주파수 위치로 나눠 보내, 특정 대역에서만 채널이 나쁜 주파수 선택적 페이딩의 영향을 줄이는 기능이다. 슬롯 하나 안에서 전반부/후반부의 주파수 위치를 바꾸는 intra-slot 호핑과, 반복 전송 슬롯마다 위치를 바꾸는 inter-slot 호핑 두 방식이 있다. PUSCH는 DCI의 frequency hopping 필드(또는 구성된 그랜트의 frequencyHoppingOffset)로, PUCCH는 PUCCH-Resource의 intraSlotFrequencyHopping 플래그로 활성화 여부와 호핑 오프셋이 결정된다. 커버리지 경계처럼 셀 경계 UE가 순간적인 페이딩으로 특정 RB에서만 유독 나쁜 SINR을 겪을 때, 호핑이 켜져 있으면 그 영향이 매 호핑 구간마다 다른 주파수로 분산되어 평균 오류율이 개선된다.",
+                      "specRef":  "TS 38.214 §6.3 (PUSCH), TS 38.213 §9.2.1 (PUCCH); TS 38.331 PUSCH-Config/frequencyHopping, PUCCH-Resource/intraSlotFrequencyHopping",
+                      "flow":  "DCI 또는 구성된 그랜트로 호핑 활성화/오프셋 지시 → 1차 홉에서 시작 RB로 전송 → 슬롯 내(intra-slot) 또는 슬롯 간(inter-slot) 경계에서 오프셋만큼 이동한 RB로 전환 → 다음 홉 전송",
+                      "verified":  false
+                  },
+                  {
                       "id":  "ant-supported-srs-txport-switch",
                       "type":  "Parameter",
                       "layer":  "base",

@@ -55,13 +55,14 @@ npx wrangler kv key put --binding=GRAPH_KV "graph:v1" --path=graph-seed.json --r
 
 | 상태 | 노드 | 엣지 |
 |---|---|---|
-| **배포됨** (`data/seed-nodes.json` + `seed-edges.json`, KV와 동기화 확인됨) | 265 | 399 |
+| **배포됨** (`data/seed-nodes.json` + `seed-edges.json`, KV와 동기화 확인됨) | 267 | 402 |
 
 배포된 도메인: RACH(2-Step 포함), 전력제어(open/closed-loop, PHR, MPR), TA, RLF, 셀 선택/재선택 심화,
 CA/EN-DC(심화 포함: BWP, CSI, 동적 전력 공유, PSCell, EPS 폴백), 핸드오버/RRM(RLM, BFD/BFR, DAPS 포함),
 RRC 상태/DRX/페이징, PUCCH/SRS 전력제어 및 SRS 심화, 안테나/MIMO(1T4R·2T4R, 빔 관리, 풀파워 전송),
 퀄컴 모뎀 RF SW 벤더 레이어(MIPI RFFE, ASDIV, FBRx 폐루프, ET/APT, QXDM/FTM/QMI),
-RF 회로 물리 레이어(전송선/임피던스, S-파라미터, PA/LNA/믹서/필터/듀플렉서 등 소자, P1dB/IP3/IMD/NF/EVM/PAPR).
+RF 회로 물리 레이어(전송선/임피던스, S-파라미터, PA/LNA/믹서/필터/듀플렉서 등 소자, P1dB/IP3/IMD/NF/EVM/PAPR),
+PUSCH/PUCCH 주파수 호핑, NR PUSCH 안테나 포트/프리코더 동적 지시(SRI/TPMI).
 
 ## TODO
 

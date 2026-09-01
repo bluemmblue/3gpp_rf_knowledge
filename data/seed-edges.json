@@ -1201,6 +1201,27 @@
                       "note":  "안테나별 SRS 전송 전력은 SRS 전력 제어식으로 계산된다"
                   },
                   {
+                      "id":  "ant-edge-sri-01",
+                      "from":  "ant-srs-antenna-switching",
+                      "to":  "ant-nr-pusch-sri-tpmi-selection",
+                      "relation":  "triggers",
+                      "note":  "SRS 안테나 스위칭으로 확보한 경로별 채널 정보가 SRI/TPMI 지시의 근거가 된다"
+                  },
+                  {
+                      "id":  "ant-edge-sri-02",
+                      "from":  "ant-nr-pusch-sri-tpmi-selection",
+                      "to":  "ant-max-mimo-layers-pusch",
+                      "relation":  "uses_parameter",
+                      "note":  "SRI/TPMI 지시에는 사용할 레이어 수도 함께 포함된다"
+                  },
+                  {
+                      "id":  "hop-edge-01",
+                      "from":  "hop-proc-freq-hopping",
+                      "to":  "param-bler",
+                      "relation":  "affects",
+                      "note":  "주파수 다이버시티로 특정 대역 페이딩에 의한 순간적 BLER 열화를 완화한다"
+                  },
+                  {
                       "id":  "ant-edge-05",
                       "from":  "ant-txrx-chain-notation",
                       "to":  "ant-max-mimo-layers-pusch",
