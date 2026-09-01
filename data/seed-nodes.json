@@ -2600,7 +2600,7 @@
                       "name_ko":  "고조파",
                       "name_en":  "Harmonic",
                       "description":  "원래 신호 주파수의 정수배(2배, 3배, ...)에서 생기는 원치 않는 신호 성분으로, 비선형 소자를 지날 때 필연적으로 함께 만들어진다. 2차 고조파가 다른 밴드의 수신 대역과 겹치면 그 밴드의 감도를 떨어뜨릴 수 있어(하모닉 디센스), 송신 경로의 필터가 고조파를 충분히 억제하도록 설계된다. 3GPP 표준의 스퓨리어스 방사 요구사항 중 상당 부분이 실질적으로 이 고조파 억제 요구를 규정한 것이다.",
-                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준 (관련 표준: TS 38.101-1 스퓨리어스 방사 한계)",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준 (관련 표준: TS 38.101-1 §6.5.3 스퓨리어스 방사 한계)",
                       "verified":  false
                   },
                   {
@@ -2661,6 +2661,246 @@
                       "name_en":  "Constellation and Modulation-Order Sensitivity",
                       "description":  "I/Q 평면 위에 변조 방식이 쓰는 심볼 위치들을 점으로 찍어 보여주는 도표로, QPSK처럼 심볼 수가 적으면 점 사이 간격이 넓어 왜곡에 관대하지만 256QAM처럼 심볼 수가 많으면 점 사이 간격이 좁아 같은 크기의 잡음·왜곡에도 잘못된 심볼로 판정될 확률(오류율)이 크게 높아진다. 그래서 네트워크는 무선 환경이 좋을 때만 높은 변조 차수를 스케줄링하며, RF 프론트엔드의 선형성이 나쁘면 스펙상 가능한 변조 차수를 실제로는 못 쓰는 형태로 처리량 손실이 나타난다.",
                       "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "rxq-param-rssi",
+                      "type":  "Parameter",
+                      "layer":  "base",
+                      "name_ko":  "RSSI (수신 신호 강도)",
+                      "name_en":  "Received Signal Strength Indicator",
+                      "description":  "측정 대역폭 안에서 서빙 셀, 인접 셀, 간섭, 열잡음까지 전부 합친 총 수신 전력을 선형 평균한 값이다. RSRP가 \u0027내 기준 신호만\u0027 골라서 본다면 RSSI는 \u0027그 대역에 실제로 들어오는 모든 에너지\u0027를 보는 것이라, RSSI가 높다고 무조건 좋은 게 아니라 간섭이 많아도 RSSI는 커진다. RSRQ 계산식(N×RSRP/RSSI)의 분모로 쓰여, RSRP는 정상인데 RSRQ가 나쁘면 RSSI(=간섭)가 높다는 뜻으로 해석하는 것이 실무 진단의 기본이다.",
+                      "specRef":  "TS 38.215 §5.1 (NR carrier RSSI)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "rxq-param-rsrq",
+                      "type":  "Parameter",
+                      "layer":  "base",
+                      "name_ko":  "RSRQ (기준 신호 수신 품질)",
+                      "name_en":  "Reference Signal Received Quality",
+                      "description":  "N×RSRP를 RSSI로 나눈 비율로, 신호 세기(RSRP)가 아니라 그 세기가 전체 수신 에너지 중 얼마나 순수한 비중을 차지하는지를 나타내는 \u0027품질\u0027 지표다. RSRP는 높은데 RSRQ가 낮으면 신호 자체는 세지만 주변 간섭도 그만큼 세다는 뜻이라, 서빙 셀 전환이나 재선택 판단에서 RSRP만으로는 안 보이는 간섭 상황을 잡아내는 데 쓰인다. RSRP·RSRQ를 함께 봐야 \u0027커버리지 문제(둘 다 나쁨)\u0027와 \u0027간섭 문제(RSRP는 정상, RSRQ만 나쁨)\u0027를 구분할 수 있다.",
+                      "specRef":  "TS 38.215 §5.1.3 (SS-RSRQ), §5.1.4 (CSI-RSRQ)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "rxq-param-sinr",
+                      "type":  "Parameter",
+                      "layer":  "base",
+                      "name_ko":  "SINR/SNR (신호 대 간섭 및 잡음비)",
+                      "name_en":  "Signal to Interference plus Noise Ratio",
+                      "description":  "원하는 신호의 세기를 간섭과 열잡음을 합친 크기로 나눈 값으로, 실제로 몇 비트를 얼마나 정확히 실어 보낼 수 있는지(MCS·처리량)를 가장 직접적으로 결정하는 지표다. RSRP·RSRQ가 신호 자체의 세기·순도를 본다면 SINR은 \u0027그 조건에서 실제로 통신이 잘 되는가\u0027를 보는 최종 결과값에 가까워, CQI 계산과 스케줄링 결정의 근거가 된다. 같은 RSRP라도 인접 셀 간섭이나 자기 단말의 자기간섭(Desense)이 있으면 SINR만 나빠지므로, 처리량 이슈를 볼 때 RSRP보다 SINR을 먼저 확인하는 것이 일반적이다.",
+                      "specRef":  "TS 38.215 §5.1 (SS-SINR, CSI-SINR)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-ber",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "BER (비트 오류율)",
+                      "name_en":  "Bit Error Rate",
+                      "description":  "복호화 전(하드/소프트 판정 단계) 또는 후에, 전체 전송 비트 중 잘못 판정된 비트의 비율이다. 3GPP 표준이 상위 계층 성능 지표로 채택한 BLER과 달리, BER은 복조·복호 성능을 순수 물리계층 관점에서 보는 일반적인 통신공학 지표라 특정 3GPP 조항에 묶이지 않는다. 코딩 이득 덕분에 실제로 사용자가 체감하는 BLER은 BER보다 훨씬 낮게 나오는 것이 정상이며, 둘의 관계가 이론과 크게 어긋나면(같은 SINR에서 BER 대비 BLER이 비정상적으로 높으면) 복호기 자체의 문제를 의심한다.",
+                      "specRef":  "일반 통신공학 지표 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-fer-per",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "FER/PER (프레임/패킷 오류율)",
+                      "name_en":  "Frame Error Rate / Packet Error Rate",
+                      "description":  "BER·BLER이 물리계층 비트·전송블록 단위의 오류를 본다면, FER/PER은 그보다 상위(RLC/PDCP 이상 또는 애플리케이션) 계층에서 최종적으로 잘못되거나 유실된 프레임·패킷의 비율을 본다. HARQ·ARQ 재전송으로도 복구되지 못하고 상위 계층까지 올라온 오류만 집계되므로, BLER은 정상인데 PER이 높다면 재전송 메커니즘 자체(타이밍, 재전송 횟수 제한)나 그 위 계층의 문제를 의심해야 한다.",
+                      "specRef":  "일반 통신공학 지표 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "harq-proc-retransmission",
+                      "type":  "Procedure",
+                      "layer":  "base",
+                      "name_ko":  "HARQ 재전송 절차",
+                      "name_en":  "HARQ Retransmission Procedure",
+                      "description":  "수신 측이 전송블록을 못 받았거나 오류를 발견하면 NACK을 보내고, 송신 측은 이전 전송을 폐기하지 않은 채(Chase Combining) 또는 다른 리던던시 버전으로(Incremental Redundancy) 같은 데이터를 재전송해 수신 측이 이전 시도와 결합해 복호 성공률을 높이는 MAC 계층 메커니즘이다. ACK/NACK 판정과 재전송 타이밍은 정해진 프로세스(HARQ process ID)별로 병렬로 관리되어, 하나의 재전송을 기다리는 동안에도 다른 프로세스로 새 데이터를 계속 보낼 수 있다. 이 메커니즘이 있기 때문에 BLER 목표를 10%처럼 비교적 높게 잡아도 최종 사용자 체감 오류율은 훨씬 낮게 유지된다.",
+                      "specRef":  "TS 38.321 §5.4.2 (UL HARQ), §5.3.2 (DL HARQ); TS 38.213 §9 (HARQ-ACK 타이밍)",
+                      "flow":  "전송블록 송신 → 수신 측 CRC 검사 → 실패 시 NACK 회신 → 송신 측이 동일 HARQ 프로세스로 재전송(같은/다른 리던던시 버전) → 수신 측이 기존 수신값과 결합해 재복호 → 성공 시 ACK",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "harq-param-nack-rate",
+                      "type":  "Parameter",
+                      "layer":  "base",
+                      "name_ko":  "HARQ NACK Rate",
+                      "name_en":  "HARQ NACK Rate",
+                      "description":  "일정 구간 동안 HARQ 재전송 요청(NACK)이 발생한 비율로, 사실상 초기 전송 시점의 BLER과 같은 값을 재전송 관점에서 부르는 이름이다. 링크 적응(Link Adaptation)이 목표로 삼는 값이 바로 이 지표이며, 목표보다 지속적으로 높으면 MCS가 채널 대비 너무 공격적으로 잡혔다는 뜻이고 목표보다 훨씬 낮으면 처리량을 더 낼 수 있는데 보수적으로 스케줄링되고 있다는 뜻이다. 로그에서 NACK Rate 추이와 CQI 보고값을 함께 보면 링크 적응이 채널 변화를 잘 따라가고 있는지 판단할 수 있다.",
+                      "specRef":  "TS 38.321 §5.4.2, §5.3.2 (HARQ 관련)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-sensitivity",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "수신 감도 (Sensitivity / REFSENS)",
+                      "name_en":  "Reference Sensitivity (REFSENS)",
+                      "description":  "정해진 기준 BLER(대개 목표 처리량의 95% 이상 또는 특정 % 이하 오류율)을 만족시킬 수 있는 가장 약한 입력 신호 레벨로, 수신기가 검출할 수 있는 한계선을 정량화한 값이다. 감도는 LNA의 잡음 지수, 경로 삽입 손실, 대역폭 등 수신 체인 전체 특성이 합쳐진 결과이며, 3GPP는 밴드·채널 대역폭별로 이 값의 최소 요구 수준(REFSENS)을 표로 규정한다. 실무에서 \u0027약전계에서 유독 이 밴드만 빨리 콜드랍된다\u0027는 증상은 그 밴드의 실제 감도가 규정된 REFSENS보다 나빠졌는지를 먼저 확인하는 문제다.",
+                      "specRef":  "TS 38.101-1 §7.3.2 (Reference sensitivity)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-acs",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "ACS (인접 채널 선택도)",
+                      "name_en":  "Adjacent Channel Selectivity",
+                      "description":  "원하는 채널 주파수에서의 수신 필터 감쇠량과 바로 옆 인접 채널 주파수에서의 감쇠량의 비로, 수신기가 원하는 신호 바로 옆에 있는 강한 신호를 얼마나 잘 걸러내는지를 나타낸다. ACS가 부족하면 인접 채널의 강한 신호(다른 오퍼레이터의 강전계 신호 등)가 필터를 충분히 통과해 원하는 신호의 수신을 방해하는데, 이는 원하는 채널 자체의 SINR이 나쁜 것과 증상이 비슷해 보이지만 원인은 필터 성능 부족이라는 점이 다르다.",
+                      "specRef":  "TS 38.101-1 §7.5 (Adjacent channel selectivity)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-blocking",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "대역 내/외 블로킹 내성",
+                      "name_en":  "In-band / Out-of-band Blocking",
+                      "description":  "원하는 신호와 멀리 떨어진 주파수에 강한 방해 신호(블로커)가 있을 때 수신기가 그 방해를 견디고 원하는 신호를 정상적으로 받을 수 있는 능력이다. 블로커가 원하는 신호와 같은 동작 대역 안에 있으면 대역 내(in-band), 다른 대역·다른 서비스에서 오면 대역 외(out-of-band) 블로킹으로 구분한다. 강한 블로커는 LNA나 믹서를 포화(saturation)시켜 이득을 압축시키거나 자체 잡음을 늘려, 블로커와 전혀 다른 주파수인 원하는 신호의 수신 감도까지 함께 떨어뜨릴 수 있다.",
+                      "specRef":  "TS 38.101-1 §7.4~7.7 (Blocking/ACS 요구사항군)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-dynamic-range",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "다이내믹 레인지",
+                      "name_en":  "Dynamic Range",
+                      "description":  "수신기가 정상 동작할 수 있는 최소 신호 레벨(감도 근처)부터, 포화되어 왜곡이 시작되기 직전의 최대 입력 레벨까지의 범위다. 이 범위가 좁으면 신호가 약할 때는 잡음에 묻히고 신호가 강할 때는 포화로 왜곡되는 두 극단 사이에서 정상 동작 구간이 좁아져, 자동 이득 제어(AGC)가 그만큼 더 정교하게 동작해야 한다. 기지국 바로 밑처럼 신호가 매우 강한 지점에서 오히려 성능이 나빠지는 증상은 다이내믹 레인지 상한(포화)에 걸린 것을 의심할 수 있다.",
+                      "specRef":  "TS 38.101-1 §7.7 (In-band Wanted Signal / Dynamic range 관련 조항군)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-iip2",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "IIP2 (2차 입력 교차점)",
+                      "name_en":  "Second-Order Input Intercept Point",
+                      "description":  "IP3가 3차 상호변조 왜곡의 크기를 정량화한다면, IIP2는 2차 상호변조 왜곡을 같은 방식으로 외삽한 지표다. 두 방해 신호의 주파수 차(f2-f1)가 원하는 신호 대역과 겹치는 2차 왜곡 성분은, 특히 믹서로 바로 다운컨버전하는 직접변환(direct-conversion) 수신기 구조나 CA처럼 넓은 대역을 한 번에 다루는 상황에서 두드러진다. IIP2가 낮은 믹서는 두 강한 방해 신호가 동시에 들어올 때 원하는 채널 안에 눈에 띄는 잡음 성분을 만들어내 감도를 떨어뜨린다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-mod-phase-freq-error",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "위상 오차 / 주파수 오차",
+                      "name_en":  "Phase Error / Frequency Error",
+                      "description":  "위상 오차는 송신 신호의 실제 위상이 이상적인 기준 위상에서 얼마나 벗어났는지, 주파수 오차는 실제 반송파 주파수가 목표 주파수에서 얼마나 벗어났는지(대개 ppm 또는 Hz 단위)를 나타낸다. 두 오차 모두 LO를 만드는 VCO/PLL의 위상잡음·주파수 정밀도에서 비롯되며, 위상 오차가 시간에 따라 누적/변동하면 EVM 저하로 직결되고 주파수 오차가 크면 수신 측 반송파 복구(carrier recovery)에 부담을 준다. 온도 변화에 따른 기준 클럭(TCXO 등) 드리프트도 주파수 오차의 흔한 원인이다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준 (관련 표준: TS 38.101-1 주파수 오차 요구사항)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-mod-iq-imbalance",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "IQ 불균형",
+                      "name_en":  "IQ Imbalance",
+                      "description":  "이상적으로는 크기가 같고 위상이 정확히 90도 차이 나야 할 I 경로와 Q 경로가, 실제 아날로그 회로의 부품 편차 때문에 이득이나 위상이 완벽히 대칭이지 않은 상태다. 이 불균형은 원하는 신호의 이미지(거울상) 주파수 성분을 만들어내 신호 품질을 떨어뜨리며, 직접변환 트랜시버 구조에서 특히 두드러지는 문제다. 생산 단계에서 IQ 불균형을 미리 측정해 보정 계수를 저장해두고 동작 중 이를 적용해 상쇄하는 방식이 일반적이다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-mod-lo-leakage",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "LO 누설 (반송파 누설)",
+                      "name_en":  "LO Leakage / Carrier Leakage",
+                      "description":  "믹서가 이상적이라면 국부발진기(LO) 신호는 출력에 전혀 섞이지 않아야 하지만, 실제로는 믹서의 불완전한 격리 때문에 LO 성분 일부가 변조된 신호와 함께 그대로 출력으로 누설되는 현상이다. 이 누설 성분은 성상도 중심(원점)이 원래 위치에서 벗어나는 형태로 나타나 EVM을 악화시키고, 심한 경우 반송파 주파수 자체에서 별도의 스퓨리어스 톤으로 관측된다. IQ 불균형과 함께 믹서·업컨버터의 대표적인 비이상 특성으로, 두 결함을 구분해 보정하는 것이 트랜시버 캘리브레이션의 핵심 항목 중 하나다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-aclr",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "ACLR/ACPR (인접 채널 누설비)",
+                      "name_en":  "Adjacent Channel Leakage Ratio",
+                      "description":  "송신기가 자기 채널 대역 안에 실은 전력 대비, 바로 옆 인접 채널 대역으로 새어나가는 불요 전력의 비율이다. PA가 비선형 영역(P1dB 근처)으로 들어갈수록 스펙트럼이 옆으로 번져 ACLR이 나빠지므로, ACLR은 사실상 PA의 순간 선형성을 주파수 영역에서 재는 지표라고 볼 수 있다. 인접 채널에 있는 다른 사업자나 다른 UE의 수신을 방해하지 않도록 3GPP가 밴드·채널 대역폭별 최소 ACLR을 요구사항으로 규정하며, MPR/A-MPR 백오프의 상당 부분이 이 요구사항을 만족시키기 위한 것이다.",
+                      "specRef":  "TS 38.101-1 §6.5.2 관련 (인접 채널 누설), ACLR 요구사항",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-sem",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "SEM (스펙트럼 방사 마스크)",
+                      "name_en":  "Spectrum Emission Mask",
+                      "description":  "할당된 채널 대역폭 가장자리부터 일정 오프셋 구간까지, 주파수 오프셋별로 허용되는 최대 방사 전력을 규정한 마스크로, 이 마스크 밖으로 신호가 넘치지 않아야 한다. ACLR이 \u0027옆 채널 딱 한 구간\u0027의 누설을 보는 지표라면 SEM은 채널 바로 바깥의 여러 오프셋 구간에 걸친 방사 형태 전체를 규정한다는 점이 다르며, 두 요구사항은 서로 보완적으로 함께 시험된다. 마스크를 벗어나는 흔한 원인은 PA 비선형성과 필터의 대역 밖 감쇠 부족이다.",
+                      "specRef":  "TS 38.101-1 §6.5.2 (Spectrum emission mask)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-spurious-emission",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "스퓨리어스 방사 (일반)",
+                      "name_en":  "Spurious Emissions (General)",
+                      "description":  "SEM이 채널 바로 옆 근접 구간을 규정한다면, 스퓨리어스 방사는 그보다 훨씬 멀리 떨어진 주파수(다른 밴드, 다른 서비스 대역 포함)에서 나타나는 불요 방사 전체를 가리키는 상위 개념이다. PA·믹서의 비선형성이 만드는 고조파, LO 누설, 디지털 클럭의 하모닉스 등 원인이 다양한 불요 신호들이 모두 이 범주에 들어가며, 3GPP는 절대적인 상한(dBm)으로 규정해 다른 무선 서비스와의 공존을 보장한다. 특정 밴드 조합에서만 다른 밴드의 수신 감도가 떨어지는 증상은 대개 이 스퓨리어스 방사가 그 밴드의 수신 대역과 겹치는 경우다.",
+                      "specRef":  "TS 38.101-1 §6.5.3 (Spurious emissions)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "pc-param-power-class",
+                      "type":  "Parameter",
+                      "layer":  "base",
+                      "name_ko":  "UE 전력 클래스 (Power Class)",
+                      "name_en":  "UE Power Class",
+                      "description":  "단말이 낼 수 있는 정격 최대 송신 전력을 등급으로 정의한 것으로, 대부분의 스마트폰은 PC3(최대 23dBm)이고, 특정 밴드·특정 용도(예: 일부 TDD 밴드의 커버리지 확장)에서는 PC2(최대 26dBm)처럼 더 높은 전력을 요구하기도 한다. 이 값이 PCMAX 계산의 상한 입력값이 되므로, 어떤 단말·밴드가 몇 dB 더 큰 커버리지를 가지는지의 출발점이 된다. 실무에서 \u0027이 밴드는 PC2라 다른 밴드보다 커버리지가 좋다\u0027는 식의 설명이 여기서 나온다.",
+                      "specRef":  "TS 38.101-1 §6.2.1 (Table 6.2.1-1, UE Power Class)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "perf-param-throughput",
+                      "type":  "Parameter",
+                      "layer":  "base",
+                      "name_ko":  "처리량 (Throughput)",
+                      "name_en":  "Throughput",
+                      "description":  "일정 시간 동안 실제로 전달된 데이터량으로, MAC 계층(스케줄링된 그랜트 그대로), RLC/PDCP 계층(재전송·헤더 오버헤드 반영), 애플리케이션 계층(TCP/IP 오버헤드까지 반영)에서 측정한 값이 서로 다르게 나온다. 무선 환경이 원인인 처리량 저하는 SINR·MCS·랭크·재전송률의 조합으로 설명되지만, MAC 처리량은 정상인데 상위 계층 처리량만 낮다면 무선 구간이 아니라 상위 프로토콜(흐름/혼잡 제어 등)이나 네트워크 쪽 원인을 봐야 한다. 그래서 처리량 이슈를 진단할 때는 항상 어느 계층에서 측정한 값인지부터 명시하는 것이 중요하다.",
+                      "specRef":  "TS 38.101-4/-2 (복조 성능 시험의 throughput 기준) 등에서 간접 인용 — 3GPP가 직접 정의하는 단일 조항은 없음",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "perf-param-mcs",
+                      "type":  "Parameter",
+                      "layer":  "base",
+                      "name_ko":  "MCS (변조 및 부호화 방식)",
+                      "name_en":  "Modulation and Coding Scheme",
+                      "description":  "변조 차수(QPSK/16QAM/64QAM/256QAM 등)와 채널 부호화율의 조합을 인덱스 하나로 정의한 표로, 스케줄러가 CQI 보고를 참고해 현재 채널 상태에 맞는 MCS 인덱스를 매 전송마다 선택한다. 채널이 좋을수록 더 높은 변조 차수·부호화율(더 많은 비트/심볼)을 쓸 수 있어 처리량이 오르지만, 실제 조건보다 과도하게 높은 MCS를 선택하면 오류율이 튀고 재전송이 늘어 오히려 실효 처리량이 떨어진다. 특정 변조 차수(예: 256QAM)까지만 스펙상 가능한데 실제로는 그 아래에서 멈춰 있다면, 링크 적응 알고리즘이 보수적인 것인지 RF 프론트엔드의 선형성이 실제로 그 변조 차수를 감당 못 하는 것인지를 구분해야 한다.",
+                      "specRef":  "TS 38.214 §5.1.3.1 (PDSCH MCS 테이블), TS 38.213 §8.1 (PUSCH MCS)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-mimo-diversity-gain",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "다이버시티 이득과 공간 다중화 이득",
+                      "name_en":  "Diversity Gain and Spatial Multiplexing Gain",
+                      "description":  "여러 안테나를 쓸 때 얻을 수 있는 이득은 크게 두 방향으로 나뉜다. 다이버시티 이득은 서로 다른 경로의 페이딩이 동시에 나쁠 확률이 낮다는 점을 이용해 링크의 신뢰성(오류율)을 개선하는 것이고, 공간 다중화 이득은 서로 다른 경로에 별개의 데이터 스트림(레이어)을 동시에 실어 보내 처리량 자체를 늘리는 것이다. 안테나 개수·경로 상관도가 같아도 채널 상황에 따라 둘 중 어느 이득을 우선할지가 달라지며(랭크 적응), SINR이 낮을 때는 다이버시티, SINR이 충분히 높을 때는 다중화 쪽으로 기우는 것이 일반적이다.",
+                      "specRef":  "일반 통신 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-desense",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "자기간섭 / Desense (감도 저하)",
+                      "name_en":  "Self-Jamming / Desensitization",
+                      "description":  "단말 스스로가 만들어내는 불요 신호(자신의 송신 신호의 하모닉·상호변조 성분, 디지털 인터페이스의 클럭 하모닉스 등)가 자기 수신 대역으로 흘러들어가 수신 잡음 바닥을 높이고 결과적으로 감도를 떨어뜨리는 현상을 통칭한다. 원인은 크게 두 갈래로, 하나는 자기 Tx 경로와 Rx 경로 사이의 격리·아이솔레이션 부족으로 송신 하모닉/IMD가 직접 새어들어가는 경우이고, 다른 하나는 USB·디스플레이 인터페이스(DSI) 같은 고속 디지털 신호의 클럭 하모닉스가 RF 실드를 넘어 커플링되는 경우다. 판별의 핵심은 원인이 되는 활동(강한 UL 송신, 특정 디지털 인터페이스 사용)을 멈췄을 때 감도가 즉시 회복되는지 보는 것이며, 회복되면 자기간섭, 회복되지 않으면 순수 RF 성능(NF, 경로 손실) 문제로 갈린다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "qc-symptom-digital-clock-desense",
+                      "type":  "Symptom",
+                      "layer":  "application",
+                      "name_ko":  "고속 디지털 인터페이스 클럭 하모닉스로 인한 감도 저하",
+                      "name_en":  "Rx Desense from High-Speed Digital Interface Clock Harmonics",
+                      "description":  "무선 환경도 정상이고 자기 UL 송신 전력도 낮은데, 특정 밴드에서만 수신 감도가 몇 dB씩 나빠지는 증상이다. USB 3.x, 디스플레이(DSI/MIPI) 같은 고속 디지털 인터페이스가 내는 클럭과 그 하모닉스 중 하나가 우연히 특정 밴드의 수신 대역과 겹치면, RF 실드와 그라운드 설계가 완벽하지 않은 이상 그 에너지 일부가 안테나나 수신 경로로 커플링되어 잡음 바닥을 높인다. 판별법은 해당 디지털 인터페이스를 끄거나 다른 속도 모드로 바꿨을 때 감도가 회복되는지 보는 것이며, 회복되면 RF 문제가 아니라 보드 레이아웃/실드 문제로 결론짓고 원인 클럭 주파수와 피해 밴드의 관계부터 좁혀나간다.",
                       "verified":  false
                   }
               ]

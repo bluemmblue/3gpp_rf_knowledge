@@ -2760,6 +2760,286 @@
                       "to":  "phy-mod-evm",
                       "relation":  "explained_by",
                       "note":  "전원 트래킹 오정합 증상에서 언급하는 신호 품질 저하가 곧 EVM 열화"
+                  },
+                  {
+                      "id":  "kpi-e-rssi-rsrq",
+                      "from":  "rxq-param-rssi",
+                      "to":  "rxq-param-rsrq",
+                      "relation":  "uses_parameter",
+                      "note":  "RSSI가 RSRQ 계산식의 분모로 쓰인다"
+                  },
+                  {
+                      "id":  "kpi-e-rsrp-rsrq",
+                      "from":  "param-rsrp",
+                      "to":  "rxq-param-rsrq",
+                      "relation":  "uses_parameter",
+                      "note":  "RSRP가 RSRQ 계산식의 분자(N×RSRP)로 쓰인다"
+                  },
+                  {
+                      "id":  "kpi-e-rsrq-sinr",
+                      "from":  "rxq-param-rsrq",
+                      "to":  "rxq-param-sinr",
+                      "relation":  "affects",
+                      "note":  "간섭이 커지면(RSRQ 저하) SINR도 함께 나빠지는 경향이 있다"
+                  },
+                  {
+                      "id":  "kpi-e-sinr-cqi",
+                      "from":  "rxq-param-sinr",
+                      "to":  "ca2-param-cqi-pmi-ri",
+                      "relation":  "affects",
+                      "note":  "SINR이 CQI 보고값 산정의 핵심 근거다"
+                  },
+                  {
+                      "id":  "kpi-e-sinr-mcs",
+                      "from":  "rxq-param-sinr",
+                      "to":  "perf-param-mcs",
+                      "relation":  "affects",
+                      "note":  "SINR/CQI 조건에 맞춰 스케줄러가 MCS를 결정한다"
+                  },
+                  {
+                      "id":  "kpi-e-mcs-bler",
+                      "from":  "perf-param-mcs",
+                      "to":  "param-bler",
+                      "relation":  "affects",
+                      "note":  "MCS가 채널 대비 과도하면 BLER이 튄다"
+                  },
+                  {
+                      "id":  "kpi-e-mcs-throughput",
+                      "from":  "perf-param-mcs",
+                      "to":  "perf-param-throughput",
+                      "relation":  "affects",
+                      "note":  "변조 차수·부호화율이 높을수록 처리량이 커진다"
+                  },
+                  {
+                      "id":  "kpi-e-bler-harqnack",
+                      "from":  "param-bler",
+                      "to":  "harq-param-nack-rate",
+                      "relation":  "affects",
+                      "note":  "초기 전송 BLER이 곧 HARQ NACK Rate로 관측된다"
+                  },
+                  {
+                      "id":  "kpi-e-harqproc-nackrate",
+                      "from":  "harq-proc-retransmission",
+                      "to":  "harq-param-nack-rate",
+                      "relation":  "uses_parameter",
+                      "note":  "재전송 절차의 트리거 여부를 이 비율로 관측한다"
+                  },
+                  {
+                      "id":  "kpi-e-harqnack-throughput",
+                      "from":  "harq-param-nack-rate",
+                      "to":  "perf-param-throughput",
+                      "relation":  "affects",
+                      "note":  "NACK Rate가 높을수록 재전송이 늘어 실효 처리량이 줄어든다"
+                  },
+                  {
+                      "id":  "kpi-e-bler-fer",
+                      "from":  "param-bler",
+                      "to":  "phy-param-fer-per",
+                      "relation":  "affects",
+                      "note":  "HARQ로도 복구 못한 BLER이 상위 계층 FER/PER로 이어진다"
+                  },
+                  {
+                      "id":  "kpi-e-ber-bler",
+                      "from":  "phy-param-ber",
+                      "to":  "param-bler",
+                      "relation":  "affects",
+                      "note":  "물리계층 BER이 채널 부호화를 거쳐 전송블록 단위 BLER로 나타난다"
+                  },
+                  {
+                      "id":  "kpi-e-sensitivity-nf",
+                      "from":  "phy-param-sensitivity",
+                      "to":  "phy-param-nf",
+                      "relation":  "explained_by",
+                      "note":  "수신 감도는 LNA 잡음 지수가 좌우하는 대표적인 결과 지표다"
+                  },
+                  {
+                      "id":  "kpi-e-sensitivity-rsrp",
+                      "from":  "phy-param-sensitivity",
+                      "to":  "param-rsrp",
+                      "relation":  "affects",
+                      "note":  "감도가 나쁜 밴드는 같은 RSRP에서도 실질 링크 품질이 더 나쁘다"
+                  },
+                  {
+                      "id":  "kpi-e-acs-blocking",
+                      "from":  "phy-param-acs",
+                      "to":  "phy-param-blocking",
+                      "relation":  "affects",
+                      "note":  "둘 다 강한 인접/이격 신호에 대한 수신기 내성을 규정하는 같은 시험 계열이다"
+                  },
+                  {
+                      "id":  "kpi-e-blocking-sensitivity",
+                      "from":  "phy-param-blocking",
+                      "to":  "phy-param-sensitivity",
+                      "relation":  "affects",
+                      "note":  "강한 블로커가 LNA를 압축시켜 감도를 함께 떨어뜨린다"
+                  },
+                  {
+                      "id":  "kpi-e-dynrange-lna",
+                      "from":  "phy-param-dynamic-range",
+                      "to":  "phy-component-lna",
+                      "relation":  "explained_by",
+                      "note":  "다이내믹 레인지 상한은 LNA/믹서의 포화 특성으로 결정된다"
+                  },
+                  {
+                      "id":  "kpi-e-lna-iip2",
+                      "from":  "phy-component-lna",
+                      "to":  "phy-param-iip2",
+                      "relation":  "affects",
+                      "note":  "LNA/믹서 체인의 2차 비선형성이 IIP2로 정량화된다"
+                  },
+                  {
+                      "id":  "kpi-e-mixer-iip2",
+                      "from":  "phy-component-mixer",
+                      "to":  "phy-param-iip2",
+                      "relation":  "affects",
+                      "note":  "직접변환 믹서 구조에서 IIP2가 특히 중요하다"
+                  },
+                  {
+                      "id":  "kpi-e-lna-ip3",
+                      "from":  "phy-component-lna",
+                      "to":  "phy-param-ip3",
+                      "relation":  "affects",
+                      "note":  "수신단 IP3(IIP3)도 LNA/믹서의 비선형성으로 결정된다"
+                  },
+                  {
+                      "id":  "kpi-e-vcopll-phasefreq",
+                      "from":  "phy-component-vco-pll",
+                      "to":  "phy-mod-phase-freq-error",
+                      "relation":  "affects",
+                      "note":  "LO의 위상잡음·정밀도가 위상/주파수 오차의 근원이다"
+                  },
+                  {
+                      "id":  "kpi-e-phasefreq-evm",
+                      "from":  "phy-mod-phase-freq-error",
+                      "to":  "phy-mod-evm",
+                      "relation":  "affects",
+                      "note":  "위상/주파수 오차가 누적되면 EVM이 악화된다"
+                  },
+                  {
+                      "id":  "kpi-e-mixer-iqimbalance",
+                      "from":  "phy-component-mixer",
+                      "to":  "phy-mod-iq-imbalance",
+                      "relation":  "affects",
+                      "note":  "믹서/변조기의 I·Q 경로 비대칭이 IQ 불균형의 원인이다"
+                  },
+                  {
+                      "id":  "kpi-e-iqimbalance-evm",
+                      "from":  "phy-mod-iq-imbalance",
+                      "to":  "phy-mod-evm",
+                      "relation":  "affects",
+                      "note":  "IQ 불균형이 이미지 성분을 만들어 EVM을 악화시킨다"
+                  },
+                  {
+                      "id":  "kpi-e-mixer-loleakage",
+                      "from":  "phy-component-mixer",
+                      "to":  "phy-mod-lo-leakage",
+                      "relation":  "affects",
+                      "note":  "믹서의 LO-RF 격리 부족이 LO 누설의 직접 원인이다"
+                  },
+                  {
+                      "id":  "kpi-e-loleakage-evm",
+                      "from":  "phy-mod-lo-leakage",
+                      "to":  "phy-mod-evm",
+                      "relation":  "affects",
+                      "note":  "LO 누설이 성상도 중심을 흔들어 EVM을 악화시킨다"
+                  },
+                  {
+                      "id":  "kpi-e-pa-aclr",
+                      "from":  "phy-component-pa",
+                      "to":  "phy-param-aclr",
+                      "relation":  "affects",
+                      "note":  "PA 비선형성이 인접 채널 누설(ACLR)로 직접 나타난다"
+                  },
+                  {
+                      "id":  "kpi-e-p1db-aclr",
+                      "from":  "phy-param-p1db",
+                      "to":  "phy-param-aclr",
+                      "relation":  "affects",
+                      "note":  "P1dB에 가까워질수록 ACLR이 급격히 나빠진다"
+                  },
+                  {
+                      "id":  "kpi-e-aclr-sem",
+                      "from":  "phy-param-aclr",
+                      "to":  "phy-param-sem",
+                      "relation":  "affects",
+                      "note":  "ACLR과 SEM은 같은 PA 비선형성이 만드는 서로 다른 오프셋 구간의 방사를 본다"
+                  },
+                  {
+                      "id":  "kpi-e-sem-spurious",
+                      "from":  "phy-param-sem",
+                      "to":  "phy-param-spurious-emission",
+                      "relation":  "affects",
+                      "note":  "SEM 구간을 넘어선 오프셋부터는 스퓨리어스 방사 요구사항이 적용된다"
+                  },
+                  {
+                      "id":  "kpi-e-harmonic-spurious",
+                      "from":  "phy-param-harmonic",
+                      "to":  "phy-param-spurious-emission",
+                      "relation":  "contains",
+                      "note":  "고조파는 스퓨리어스 방사의 대표적인 성분 중 하나다"
+                  },
+                  {
+                      "id":  "kpi-e-imd-spurious",
+                      "from":  "phy-param-imd",
+                      "to":  "phy-param-spurious-emission",
+                      "relation":  "contains",
+                      "note":  "상호변조 성분도 스퓨리어스 방사에 포함된다"
+                  },
+                  {
+                      "id":  "kpi-e-powerclass-pcmax",
+                      "from":  "pc-param-power-class",
+                      "to":  "pc2-formula-pcmax",
+                      "relation":  "uses_parameter",
+                      "note":  "전력 클래스의 정격 최대 전력이 PCMAX 계산의 상한 입력값이다"
+                  },
+                  {
+                      "id":  "kpi-e-diversity-srsswitch",
+                      "from":  "phy-mimo-diversity-gain",
+                      "to":  "ant-srs-antenna-switching",
+                      "relation":  "explained_by",
+                      "note":  "SRS 안테나 스위칭이 이 다이버시티/다중화 이득을 실제로 확보하는 절차다"
+                  },
+                  {
+                      "id":  "kpi-e-diversity-cqipmiri",
+                      "from":  "phy-mimo-diversity-gain",
+                      "to":  "ca2-param-cqi-pmi-ri",
+                      "relation":  "affects",
+                      "note":  "RI 보고가 사실상 다중화(레이어 수)와 다이버시티 중 어느 쪽을 쓸지의 판단 결과다"
+                  },
+                  {
+                      "id":  "kpi-e-desense-isolation",
+                      "from":  "phy-param-desense",
+                      "to":  "phy-sparam-isolation",
+                      "relation":  "explained_by",
+                      "note":  "Tx-Rx 격리 부족이 자기간섭 경로 중 하나다"
+                  },
+                  {
+                      "id":  "kpi-e-desense-imd",
+                      "from":  "phy-param-desense",
+                      "to":  "phy-param-imd",
+                      "relation":  "explained_by",
+                      "note":  "자기 Tx 신호끼리의 상호변조 성분도 자기간섭의 원인이다"
+                  },
+                  {
+                      "id":  "kpi-e-desense-endcsymptom",
+                      "from":  "endc2-symptom-band-specific-rx-desense",
+                      "to":  "phy-param-desense",
+                      "relation":  "explained_by",
+                      "note":  "EN-DC 조합별 감도 저하는 이 일반 자기간섭 메커니즘의 한 사례다"
+                  },
+                  {
+                      "id":  "kpi-e-digitaldesense-phydesense",
+                      "from":  "qc-symptom-digital-clock-desense",
+                      "to":  "phy-param-desense",
+                      "relation":  "explained_by",
+                      "note":  "디지털 인터페이스 클럭 커플링도 자기간섭/Desense의 한 경로다"
+                  },
+                  {
+                      "id":  "kpi-e-desense-sensitivity",
+                      "from":  "phy-param-desense",
+                      "to":  "phy-param-sensitivity",
+                      "relation":  "affects",
+                      "note":  "자기간섭으로 잡음 바닥이 올라가면 실효 수신 감도가 나빠진다"
                   }
               ]
 }
