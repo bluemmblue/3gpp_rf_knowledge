@@ -6,6 +6,9 @@
 <title>3GPP RF 지식 그래프</title>
 <link rel="stylesheet" href="/styles.css">
 <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/cytoscape-fcose.js"></script>
 </head>
 <body>
   <header>
@@ -13,38 +16,61 @@
     <span class="sub">망 → 단말 RF 프론트엔드 · 전력제어 / RACH</span>
     <input id="search" type="text" placeholder="예: 약전계, RACH, PHR, TX Power ...">
     <div class="layer-toggle">
-      <label><input type="checkbox" id="toggle-base" checked> 기반 레이어</label>
-      <label><input type="checkbox" id="toggle-application" checked> 응용 레이어(증상)</label>
+      <label><input type="checkbox" id="toggle-all-labels" checked> 라벨 모두 표시</label>
     </div>
-    <div class="issue-chips" id="issue-chips"></div>
+    <div class="issue-section" id="issue-section">
+      <button id="issue-toggle" class="issue-toggle" aria-expanded="true" aria-controls="issue-chips">
+        <span class="caret">▾</span> 이슈 키워드 <span id="issue-count" class="issue-count"></span>
+      </button>
+      <div class="issue-chips" id="issue-chips"></div>
+    </div>
   </header>
 
   <main>
-    <div id="cy"></div>
+    <div id="cy-wrap">
+      <div id="cy"></div>
+      <div class="cy-legend" id="cy-legend">
+        <div class="legend-head">
+          <span>노드 종류</span>
+          <button id="legend-all" class="legend-all">전체</button>
+        </div>
+        <button class="lg" data-type="Procedure" aria-pressed="true"><i style="background:#7C9BB5"></i>절차<span class="lg-n"></span></button>
+        <button class="lg" data-type="Message" aria-pressed="true"><i style="background:#8FA98A"></i>메시지<span class="lg-n"></span></button>
+        <button class="lg" data-type="Parameter" aria-pressed="true"><i style="background:#9C8FB8"></i>파라미터<span class="lg-n"></span></button>
+        <button class="lg" data-type="Formula" aria-pressed="true"><i style="background:#C9A45C"></i>공식<span class="lg-n"></span></button>
+        <button class="lg" data-type="Symptom" aria-pressed="true"><i style="background:#C97B54"></i>증상<span class="lg-n"></span></button>
+        <span class="legend-hint">클릭해 보기/숨기기 (복수 선택)</span>
+      </div>
+      <div class="cy-controls">
+        <button id="cy-fit" class="cy-btn" title="전체 보기">전체 보기</button>
+        <button id="cy-relayout" class="cy-btn" title="배치 다시 계산">배치 재계산</button>
+        <span class="cy-hint">확대하면 모든 라벨 표시 · 노드에 마우스 올리면 주변 라벨 강조</span>
+      </div>
+    </div>
+
     <aside id="side">
-      <div>
-        <h2>노드 정보</h2>
-        <div id="node-detail" class="node-detail">노드를 클릭하면 상세 정보가 표시됩니다.</div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="chat" role="tab" aria-selected="true">질의응답 챗봇</button>
+        <button class="tab" data-tab="node" role="tab" aria-selected="false">노드 정보</button>
       </div>
 
-      <div id="ask-box">
-        <h2>질의응답</h2>
-        <textarea id="ask-input" placeholder="예: 약전계일 때 tx power가 왜 올라가?"></textarea>
-        <button id="ask-btn">질문하기</button>
-        <div id="ask-answer"></div>
-      </div>
+      <section class="tab-panel active" data-panel="chat">
+        <div id="ask-box">
+          <div class="chat-head">
+            <span id="chat-turns" class="chat-turns"></span>
+            <button id="chat-new" class="secondary chat-new">+ 새 대화</button>
+          </div>
+          <div id="chat-log"></div>
+          <div class="chat-input-row">
+            <textarea id="ask-input" placeholder="예: 약전계일 때 tx power가 왜 올라가?  (Enter 전송 / Shift+Enter 줄바꿈)" rows="2"></textarea>
+            <button id="ask-btn">보내기</button>
+          </div>
+        </div>
+      </section>
 
-      <details id="admin-panel">
-        <summary>관리자 모드 (데이터 큐레이션)</summary>
-        <label>ADMIN_TOKEN</label>
-        <input id="admin-token" type="password" placeholder="wrangler secret로 등록한 토큰">
-        <label>3GPP 텍스트 붙여넣기</label>
-        <textarea id="curate-text" placeholder="스펙 원문/요약 텍스트"></textarea>
-        <button id="curate-btn" class="secondary">추출</button>
-        <div id="curate-result"></div>
-        <button id="save-btn">검토 완료 → 저장</button>
-        <div class="warning">LLM 추출 결과는 저장 전 반드시 조항·내용을 직접 검증하세요.</div>
-      </details>
+      <section class="tab-panel" data-panel="node">
+        <div id="node-detail" class="node-detail">그래프에서 노드를 클릭하면 상세 정보가 표시됩니다.</div>
+      </section>
     </aside>
   </main>
 

@@ -1,609 +1,158 @@
 {
-    "edges":  [
-                  {
-                      "id":  "ca-edge-scelladd-uses-pcellscell",
-                      "from":  "ca-proc-scell-addition",
-                      "to":  "ca-concept-pcell-scell",
-                      "relation":  "uses_parameter",
-                      "note":  "SCell 추가 절차는 PCell/SCell 구조 정의를 전제로 동작함"
-                  },
-                  {
-                      "id":  "ca-edge-scelladd-triggers-actdeact",
-                      "from":  "ca-proc-scell-addition",
-                      "to":  "ca-proc-scell-activation-deactivation",
-                      "relation":  "triggers",
-                      "note":  "추가된 SCell은 비활성 상태로 시작하며 이후 활성화/비활성화 절차의 대상이 됨"
-                  },
-                  {
-                      "id":  "ca-edge-actdeact-contains-macce",
-                      "from":  "ca-proc-scell-activation-deactivation",
-                      "to":  "ca-msg-mac-ce-scell-actdeact",
-                      "relation":  "contains",
-                      "note":  "활성화/비활성화 절차는 이 MAC CE의 송수신으로 구현됨"
-                  },
-                  {
-                      "id":  "ca-edge-bandcomb-computedby-capability",
-                      "from":  "ca-concept-band-combination",
-                      "to":  "ca-proc-ue-capability-reporting",
-                      "relation":  "computed_by",
-                      "note":  "지원 가능한 밴드 조합 목록은 UE Capability 보고 절차의 결과로 결정됨"
-                  },
-                  {
-                      "id":  "ca-edge-noca-explainedby-bandcomb",
-                      "from":  "ca-symptom-no-ca",
-                      "to":  "ca-concept-band-combination",
-                      "relation":  "explained_by",
-                      "note":  "네트워크가 시도한 SCell 조합을 UE가 지원하지 않는 경우"
-                  },
-                  {
-                      "id":  "ca-edge-noca-explainedby-capability",
-                      "from":  "ca-symptom-no-ca",
-                      "to":  "ca-proc-ue-capability-reporting",
-                      "relation":  "explained_by",
-                      "note":  "UE Capability 미보고/필터링으로 네트워크가 CA 대상 밴드를 인지하지 못함"
-                  },
-                  {
-                      "id":  "ca-edge-noca-explainedby-scelladd",
-                      "from":  "ca-symptom-no-ca",
-                      "to":  "ca-proc-scell-addition",
-                      "relation":  "explained_by",
-                      "note":  "RRCReconfiguration을 통한 SCell 추가 자체가 실패하거나 거부됨"
-                  },
-                  {
-                      "id":  "ca-edge-weakcoverage-causes-noca",
-                      "from":  "symptom-weak-coverage",
-                      "to":  "ca-symptom-no-ca",
-                      "relation":  "causes",
-                      "note":  "SCell 후보 주파수의 약전계로 SCell 추가/활성화가 실패하는 경우"
-                  },
-                  {
-                      "id":  "ca-edge-rachfail-causes-noca",
-                      "from":  "symptom-rach-failure",
-                      "to":  "ca-symptom-no-ca",
-                      "relation":  "causes",
-                      "note":  "SCell 활성화 시 필요한 임의접속 실패로 SCell이 활성 상태로 전환되지 못함"
-                  },
-                  {
-                      "id":  "ca-edge-throughput-explainedby-actdeact",
-                      "from":  "ca-symptom-ca-throughput-drop",
-                      "to":  "ca-proc-scell-activation-deactivation",
-                      "relation":  "explained_by",
-                      "note":  "SCell의 잦은 비활성화 및 활성화 지연으로 실질 처리량 이득이 감소함"
-                  },
-                  {
-                      "id":  "ca-edge-bler-causes-throughput",
-                      "from":  "param-bler",
-                      "to":  "ca-symptom-ca-throughput-drop",
-                      "relation":  "causes",
-                      "note":  "SCell 채널 품질 저하(BLER 상승)로 낮은 MCS가 적용되어 CA 처리량이 저하됨"
-                  },
-                  {
-                      "id":  "endc-edge-sgnbadd-uses-mnsn",
-                      "from":  "endc-proc-sgnb-addition",
-                      "to":  "endc-concept-mn-sn",
-                      "relation":  "uses_parameter",
-                      "note":  "SgNB 추가는 MN 주도로 SN을 선정/제어하는 구조를 전제로 함"
-                  },
-                  {
-                      "id":  "endc-edge-sgnbadd-contains-mcgscg",
-                      "from":  "endc-proc-sgnb-addition",
-                      "to":  "endc-concept-mcg-scg",
-                      "relation":  "contains",
-                      "note":  "SgNB 추가 완료 시 UE에 SCG가 새로 구성됨"
-                  },
-                  {
-                      "id":  "endc-edge-sgnbadd-triggers-splitbearer",
-                      "from":  "endc-proc-sgnb-addition",
-                      "to":  "endc-concept-split-bearer",
-                      "relation":  "triggers",
-                      "note":  "베어러 옵션에 따라 SgNB 추가 시 split bearer가 구성될 수 있음"
-                  },
-                  {
-                      "id":  "endc-edge-scgfail-triggers-sgnbrelease",
-                      "from":  "endc-proc-scg-failure",
-                      "to":  "endc-proc-sgnb-release",
-                      "relation":  "triggers",
-                      "note":  "반복적인 SCG 실패 보고는 MN의 SgNB 해제 결정으로 이어질 수 있음"
-                  },
-                  {
-                      "id":  "endc-edge-scgfail-affects-mcgscg",
-                      "from":  "endc-proc-scg-failure",
-                      "to":  "endc-concept-mcg-scg",
-                      "relation":  "affects",
-                      "note":  "SCG 실패는 SCG 상태에 영향을 주며 MCG는 유지됨"
-                  },
-                  {
-                      "id":  "endc-edge-attachfail-explainedby-sgnbadd",
-                      "from":  "endc-symptom-endc-attach-fail",
-                      "to":  "endc-proc-sgnb-addition",
-                      "relation":  "explained_by",
-                      "note":  "SgNB 추가 절차 자체의 실패(응답 없음/거부/재구성 실패)"
-                  },
-                  {
-                      "id":  "endc-edge-attachfail-explainedby-capability",
-                      "from":  "endc-symptom-endc-attach-fail",
-                      "to":  "ca-proc-ue-capability-reporting",
-                      "relation":  "explained_by",
-                      "note":  "EN-DC 밴드조합도 동일한 UE Capability 보고 절차로 협상되므로 미보고 시 SgNB 추가 자체가 시도되지 않음"
-                  },
-                  {
-                      "id":  "endc-edge-weakcoverage-causes-attachfail",
-                      "from":  "symptom-weak-coverage",
-                      "to":  "endc-symptom-endc-attach-fail",
-                      "relation":  "causes",
-                      "note":  "NR SCG 후보 주파수의 약전계로 SgNB 추가가 실패하는 경우"
-                  },
-                  {
-                      "id":  "endc-edge-rachfail-causes-attachfail",
-                      "from":  "symptom-rach-failure",
-                      "to":  "endc-symptom-endc-attach-fail",
-                      "relation":  "causes",
-                      "note":  "SCG 측 임의접속 실패로 EN-DC 접속이 완료되지 못함"
-                  },
-                  {
-                      "id":  "endc-edge-scgdrop-explainedby-scgfailure",
-                      "from":  "endc-symptom-scg-failure-drop",
-                      "to":  "endc-proc-scg-failure",
-                      "relation":  "explained_by",
-                      "note":  "SCGFailureInformation 보고로 이어지는 SCG 측 문제가 근본 원인"
-                  },
-                  {
-                      "id":  "endc-edge-scgdrop-explainedby-splitbearer",
-                      "from":  "endc-symptom-scg-failure-drop",
-                      "to":  "endc-concept-split-bearer",
-                      "relation":  "explained_by",
-                      "note":  "split bearer의 SCG 경로 상실로 체감 속도가 MCG 단독 수준으로 급감함"
-                  },
-                  {
-                      "id":  "e-ho-01",
-                      "from":  "meas-event-a1-a2",
-                      "to":  "meas-report",
-                      "relation":  "triggers",
-                      "note":  "A1/A2 진입 조건 만족 시 UE가 측정 보고를 전송"
-                  },
-                  {
-                      "id":  "e-ho-02",
-                      "from":  "meas-event-a3-a4-a5",
-                      "to":  "meas-report",
-                      "relation":  "triggers",
-                      "note":  "A3/A4/A5 진입 조건 만족 시 UE가 측정 보고를 전송"
-                  },
-                  {
-                      "id":  "e-ho-03",
-                      "from":  "meas-event-b1-b2",
-                      "to":  "meas-report",
-                      "relation":  "triggers",
-                      "note":  "B1/B2 진입 조건 만족 시 UE가 측정 보고를 전송"
-                  },
-                  {
-                      "id":  "e-ho-04",
-                      "from":  "meas-event-a3-a4-a5",
-                      "to":  "meas-hysteresis",
-                      "relation":  "uses_parameter"
-                  },
-                  {
-                      "id":  "e-ho-05",
-                      "from":  "meas-event-a3-a4-a5",
-                      "to":  "meas-time-to-trigger",
-                      "relation":  "uses_parameter"
-                  },
-                  {
-                      "id":  "e-ho-06",
-                      "from":  "meas-report",
-                      "to":  "ho-procedure",
-                      "relation":  "triggers",
-                      "note":  "네트워크가 측정 보고 수신 후 핸드오버 여부를 결정"
-                  },
-                  {
-                      "id":  "e-ho-07",
-                      "from":  "ho-procedure",
-                      "to":  "ho-cho",
-                      "relation":  "contains",
-                      "note":  "CHO는 핸드오버 절차의 조건부 실행 변형"
-                  },
-                  {
-                      "id":  "e-ho-08",
-                      "from":  "ho-procedure",
-                      "to":  "ho-rrc-reconf-sync",
-                      "relation":  "contains"
-                  },
-                  {
-                      "id":  "e-ho-09",
-                      "from":  "ho-rrc-reconf-sync",
-                      "to":  "ho-t304",
-                      "relation":  "uses_parameter",
-                      "note":  "메시지 수신 시 T304 타이머 시작"
-                  },
-                  {
-                      "id":  "e-ho-10",
-                      "from":  "ho-rrc-reconf-sync",
-                      "to":  "ho-random-access-target",
-                      "relation":  "triggers"
-                  },
-                  {
-                      "id":  "e-ho-11",
-                      "from":  "ho-t304",
-                      "to":  "ho-failure",
-                      "relation":  "triggers",
-                      "note":  "T304 만료 시 HOF 선언"
-                  },
-                  {
-                      "id":  "e-ho-12",
-                      "from":  "ho-random-access-target",
-                      "to":  "ho-failure",
-                      "relation":  "causes",
-                      "note":  "타겟 셀 RA 실패도 HOF 조건 중 하나"
-                  },
-                  {
-                      "id":  "e-ho-13",
-                      "from":  "ho-failure",
-                      "to":  "msg-rrc-reestablishment",
-                      "relation":  "triggers",
-                      "note":  "HOF 발생 시 UE는 RLF와 마찬가지로 RRC 재수립 절차를 개시"
-                  },
-                  {
-                      "id":  "e-ho-14",
-                      "from":  "ho-failure",
-                      "to":  "proc-rlf",
-                      "relation":  "affects",
-                      "note":  "HOF와 RLF는 서로 다른 별개의 트리거 조건(T304 만료 vs T310 만료 등)을 가지나, 둘 다 UE로 하여금 유사한 복구 동작(재수립)을 하게 만든다는 점에서 관련됨. HOF가 RLF를 유발하는 것은 아님"
-                  },
-                  {
-                      "id":  "e-ho-15",
-                      "from":  "ho-procedure",
-                      "to":  "ho-ping-pong",
-                      "relation":  "affects",
-                      "note":  "짧은 시간 내 반복적인 핸드오버 실행이 핑퐁 지표를 구성"
-                  },
-                  {
-                      "id":  "e-ho-16",
-                      "from":  "ho-ping-pong",
-                      "to":  "meas-hysteresis",
-                      "relation":  "mitigated_by",
-                      "note":  "hysteresis(및 time-to-trigger) 값을 상향 조정하여 핑퐁 발생 완화"
-                  },
-                  {
-                      "id":  "e-ho-17",
-                      "from":  "ho-symptom-failure",
-                      "to":  "ho-failure",
-                      "relation":  "explained_by"
-                  },
-                  {
-                      "id":  "e-ho-18",
-                      "from":  "ho-symptom-failure",
-                      "to":  "symptom-call-drop",
-                      "relation":  "causes",
-                      "note":  "HOF 이후 재수립까지 실패하면 콜드랍으로 이어짐"
-                  },
-                  {
-                      "id":  "e-ho-19",
-                      "from":  "ho-symptom-failure",
-                      "to":  "ho-cho",
-                      "relation":  "mitigated_by",
-                      "note":  "조건부 핸드오버 적용으로 시그널링 지연에 따른 실패율 감소"
-                  },
-                  {
-                      "id":  "e-ho-20",
-                      "from":  "ho-symptom-ping-pong",
-                      "to":  "ho-ping-pong",
-                      "relation":  "explained_by"
-                  },
-                  {
-                      "id":  "e-ho-21",
-                      "from":  "ho-symptom-ping-pong",
-                      "to":  "ho-symptom-data-interruption",
-                      "relation":  "causes",
-                      "note":  "각 핑퐁 핸드오버 발생 시마다 짧은 데이터 중단이 누적됨"
-                  },
-                  {
-                      "id":  "e-ho-22",
-                      "from":  "ho-symptom-data-interruption",
-                      "to":  "ho-random-access-target",
-                      "relation":  "explained_by",
-                      "note":  "타겟 셀 동기화/랜덤 액세스 수행 구간이 데이터 중단의 직접 원인"
-                  },
-                  {
-                      "id":  "edge-rrc-idle-to-setup",
-                      "from":  "rrc-state-idle",
-                      "to":  "rrc-proc-setup",
-                      "relation":  "triggers",
-                      "note":  "상위 계층(NAS) 요청 또는 사용자 발신/응답 시 IDLE UE가 RRC Setup 절차를 개시"
-                  },
-                  {
-                      "id":  "edge-rrc-setup-to-connected",
-                      "from":  "rrc-proc-setup",
-                      "to":  "rrc-state-connected",
-                      "relation":  "triggers",
-                      "note":  "RRCSetupComplete 전송 완료 후 CONNECTED 상태로 전이"
-                  },
-                  {
-                      "id":  "edge-rrc-connected-to-release",
-                      "from":  "rrc-state-connected",
-                      "to":  "rrc-proc-release",
-                      "relation":  "triggers",
-                      "note":  "네트워크가 비활성 감지 또는 트래픽 종료로 RRCRelease 전송을 결정"
-                  },
-                  {
-                      "id":  "edge-rrc-release-to-idle",
-                      "from":  "rrc-proc-release",
-                      "to":  "rrc-state-idle",
-                      "relation":  "triggers",
-                      "note":  "RRCRelease에 suspendConfig가 포함되지 않은 경우 IDLE로 전이"
-                  },
-                  {
-                      "id":  "edge-rrc-release-to-inactive",
-                      "from":  "rrc-proc-release",
-                      "to":  "rrc-state-inactive",
-                      "relation":  "triggers",
-                      "note":  "RRCRelease에 suspendConfig가 포함된 경우 UE 컨텍스트를 보존하며 INACTIVE로 전이"
-                  },
-                  {
-                      "id":  "edge-rrc-inactive-to-resume",
-                      "from":  "rrc-state-inactive",
-                      "to":  "rrc-proc-resume",
-                      "relation":  "triggers",
-                      "note":  "상향 데이터 발생 또는 페이징 수신 시 INACTIVE UE가 RRC Resume 절차를 개시"
-                  },
-                  {
-                      "id":  "edge-rrc-resume-to-connected",
-                      "from":  "rrc-proc-resume",
-                      "to":  "rrc-state-connected",
-                      "relation":  "triggers",
-                      "note":  "RRCResume 성공 시 보존된 컨텍스트를 재활성화하여 CONNECTED로 복귀"
-                  },
-                  {
-                      "id":  "edge-paging-affects-idle",
-                      "from":  "rrc-proc-paging",
-                      "to":  "rrc-state-idle",
-                      "relation":  "affects",
-                      "note":  "IDLE 및 INACTIVE UE는 각자의 페이징 사이클에 따른 PO에서만 PDCCH(P-RNTI)를 모니터링"
-                  },
-                  {
-                      "id":  "edge-paging-triggers-setup",
-                      "from":  "rrc-proc-paging",
-                      "to":  "rrc-proc-setup",
-                      "relation":  "triggers",
-                      "note":  "MT(Mobile Terminated) 페이징 수신 시 IDLE UE가 RRC Setup 절차를 개시"
-                  },
-                  {
-                      "id":  "edge-paging-triggers-resume",
-                      "from":  "rrc-proc-paging",
-                      "to":  "rrc-proc-resume",
-                      "relation":  "triggers",
-                      "note":  "RAN Paging 수신 시 INACTIVE UE가 RRC Resume 절차를 개시"
-                  },
-                  {
-                      "id":  "edge-paging-computed-by-pfpo",
-                      "from":  "rrc-proc-paging",
-                      "to":  "rrc-formula-pf-po",
-                      "relation":  "computed_by",
-                      "note":  "UE가 모니터링해야 할 PF/PO 위치는 PF/PO 계산식으로 결정됨"
-                  },
-                  {
-                      "id":  "edge-pfpo-uses-cycle",
-                      "from":  "rrc-formula-pf-po",
-                      "to":  "rrc-param-paging-cycle",
-                      "relation":  "uses_parameter",
-                      "note":  "계산식의 T(페이징 사이클) 값을 파라미터로 사용"
-                  },
-                  {
-                      "id":  "edge-connected-contains-cdrx",
-                      "from":  "rrc-state-connected",
-                      "to":  "drx-proc-connected",
-                      "relation":  "contains",
-                      "note":  "네트워크가 DRX-Config를 설정한 경우 CONNECTED 상태 내에서 C-DRX가 동작"
-                  },
-                  {
-                      "id":  "edge-cdrx-uses-onduration",
-                      "from":  "drx-proc-connected",
-                      "to":  "drx-param-on-duration-timer",
-                      "relation":  "uses_parameter"
-                  },
-                  {
-                      "id":  "edge-cdrx-uses-inactivity",
-                      "from":  "drx-proc-connected",
-                      "to":  "drx-param-inactivity-timer",
-                      "relation":  "uses_parameter"
-                  },
-                  {
-                      "id":  "edge-cdrx-uses-longcycle",
-                      "from":  "drx-proc-connected",
-                      "to":  "drx-param-long-cycle",
-                      "relation":  "uses_parameter"
-                  },
-                  {
-                      "id":  "edge-idle-uses-pagingcycle",
-                      "from":  "rrc-state-idle",
-                      "to":  "rrc-param-paging-cycle",
-                      "relation":  "uses_parameter",
-                      "note":  "IDLE/INACTIVE 모드의 DRX 동작은 페이징 사이클(T)로 결정되며, UE-specific/기본 사이클 중 짧은 값이 우선 적용됨"
-                  },
-                  {
-                      "id":  "edge-symptom-pagingmiss-explained-by-paging",
-                      "from":  "rrc-symptom-paging-miss",
-                      "to":  "rrc-proc-paging",
-                      "relation":  "explained_by",
-                      "note":  "페이징 절차의 PF/PO 타이밍에 UE가 정확히 깨어나 PDCCH를 디코딩하지 못하면 페이징 메시지를 놓치게 됨"
-                  },
-                  {
-                      "id":  "edge-symptom-pagingmiss-explained-by-cycle",
-                      "from":  "rrc-symptom-paging-miss",
-                      "to":  "rrc-param-paging-cycle",
-                      "relation":  "explained_by",
-                      "note":  "UE-specific/기본 페이징 사이클 설정 불일치, 또는 과도하게 긴 사이클로 인해 페이징 미수신 가능성이 증가"
-                  },
-                  {
-                      "id":  "edge-weakcoverage-causes-pagingmiss",
-                      "from":  "symptom-weak-coverage",
-                      "to":  "rrc-symptom-paging-miss",
-                      "relation":  "causes",
-                      "note":  "약전계에서 PDCCH(P-RNTI) 디코딩 실패로 페이징 메시지를 수신하지 못함"
-                  },
-                  {
-                      "id":  "edge-batterydrain-explained-by-inactivity",
-                      "from":  "drx-symptom-battery-drain",
-                      "to":  "drx-param-inactivity-timer",
-                      "relation":  "explained_by",
-                      "note":  "drx-InactivityTimer(및 onDurationTimer)가 과도하게 크면 트래픽 버스트마다 활성 구간이 길게 연장되어 배터리 소모가 증가"
-                  },
-                  {
-                      "id":  "edge-latency-explained-by-longcycle",
-                      "from":  "drx-symptom-data-latency",
-                      "to":  "drx-param-long-cycle",
-                      "relation":  "explained_by",
-                      "note":  "drx-LongCycle이 길수록 하향 데이터·페이징 도착 후 단말이 깨어나기까지 대기 시간이 증가"
-                  },
-                  {
-                      "id":  "e-rach2-01",
-                      "from":  "proc-rach",
-                      "to":  "rach2-proc-2step-rach",
-                      "relation":  "contains",
-                      "note":  "NR Rel-16에서 추가된 2-Step RA 변형"
-                  },
-                  {
-                      "id":  "e-rach2-02",
-                      "from":  "rach2-proc-2step-rach",
-                      "to":  "rach2-msg-msga",
-                      "relation":  "contains"
-                  },
-                  {
-                      "id":  "e-rach2-03",
-                      "from":  "rach2-proc-2step-rach",
-                      "to":  "rach2-msg-msgb",
-                      "relation":  "contains"
-                  },
-                  {
-                      "id":  "e-rach2-04",
-                      "from":  "rach2-msg-msga",
-                      "to":  "rach2-msg-msgb",
-                      "relation":  "triggers"
-                  },
-                  {
-                      "id":  "e-rach2-05",
-                      "from":  "rach2-msg-msgb",
-                      "to":  "msg-msg2-rar",
-                      "relation":  "affects",
-                      "note":  "MsgB가 RAR 기능(TA/UL grant/C-RNTI)을 흡수해 대체"
-                  },
-                  {
-                      "id":  "e-rach2-06",
-                      "from":  "proc-rach",
-                      "to":  "rach2-proc-cbra",
-                      "relation":  "contains"
-                  },
-                  {
-                      "id":  "e-rach2-07",
-                      "from":  "proc-rach",
-                      "to":  "rach2-proc-cfra",
-                      "relation":  "contains"
-                  },
-                  {
-                      "id":  "e-rach2-08",
-                      "from":  "rach2-proc-cbra",
-                      "to":  "rach2-param-backoff-indicator",
-                      "relation":  "uses_parameter"
-                  },
-                  {
-                      "id":  "e-rach2-09",
-                      "from":  "rach2-proc-cbra",
-                      "to":  "rach2-param-preamble-trans-max",
-                      "relation":  "uses_parameter"
-                  },
-                  {
-                      "id":  "e-rach2-10",
-                      "from":  "rach2-param-preamble-trans-max",
-                      "to":  "symptom-rach-failure",
-                      "relation":  "causes",
-                      "note":  "최대 전송횟수 초과 시 RA 문제로 상위 계층 통보"
-                  },
-                  {
-                      "id":  "e-rach2-11",
-                      "from":  "rach2-param-backoff-indicator",
-                      "to":  "rach2-symptom-rach-retry-excessive",
-                      "relation":  "causes"
-                  },
-                  {
-                      "id":  "e-rach2-12",
-                      "from":  "rach2-proc-cfra",
-                      "to":  "rach2-symptom-ho-access-delay",
-                      "relation":  "causes",
-                      "note":  "CFRA 실패 시 CBRA로 폴백하며 경쟁해소 단계 추가"
-                  },
-                  {
-                      "id":  "e-rach2-13",
-                      "from":  "rach2-param-ra-response-window",
-                      "to":  "msg-msg2-rar",
-                      "relation":  "affects",
-                      "note":  "대기창 내 RAR 미수신 시 재전송 유발"
-                  },
-                  {
-                      "id":  "e-pc2-01",
-                      "from":  "proc-power-control-ul",
-                      "to":  "pc2-formula-pucch-power-control",
-                      "relation":  "contains"
-                  },
-                  {
-                      "id":  "e-pc2-02",
-                      "from":  "proc-power-control-ul",
-                      "to":  "pc2-formula-srs-power-control",
-                      "relation":  "contains"
-                  },
-                  {
-                      "id":  "e-pc2-03",
-                      "from":  "param-phr",
-                      "to":  "pc2-param-phr-type2",
-                      "relation":  "contains",
-                      "note":  "PUSCH 기준 Type1 대비 PUCCH 기준 확장 유형"
-                  },
-                  {
-                      "id":  "e-pc2-04",
-                      "from":  "pc2-param-phr-type3",
-                      "to":  "pc2-formula-srs-power-control",
-                      "relation":  "computed_by"
-                  },
-                  {
-                      "id":  "e-pc2-05",
-                      "from":  "pc2-param-phr-type2",
-                      "to":  "pc2-formula-pucch-power-control",
-                      "relation":  "computed_by"
-                  },
-                  {
-                      "id":  "e-pc2-06",
-                      "from":  "pc2-formula-pcmax",
-                      "to":  "param-tx-power-pusch",
-                      "relation":  "affects",
-                      "note":  "Pcmax가 실제 PUSCH 송신전력의 상한으로 작용"
-                  },
-                  {
-                      "id":  "e-pc2-07",
-                      "from":  "pc2-formula-pcmax",
-                      "to":  "formula-open-loop-tx-power",
-                      "relation":  "affects",
-                      "note":  "오픈루프 전력제어 결과값이 Pcmax로 클램핑됨"
-                  },
-                  {
-                      "id":  "e-pc2-08",
-                      "from":  "param-mpr",
-                      "to":  "pc2-formula-pcmax",
-                      "relation":  "affects"
-                  },
-                  {
-                      "id":  "e-pc2-09",
-                      "from":  "pc2-param-p-mpr",
-                      "to":  "pc2-formula-pcmax",
-                      "relation":  "affects"
-                  },
-                  {
-                      "id":  "e-pc2-10",
-                      "from":  "pc2-param-p-mpr",
-                      "to":  "pc2-symptom-thermal-power-backoff",
-                      "relation":  "causes"
-                  },
-                  {
-                      "id":  "e-pc2-11",
-                      "from":  "pc2-param-p-mpr",
-                      "to":  "pc2-symptom-sar-backoff-quality",
-                      "relation":  "causes"
-                  }
-              ]
+  "edges": [
+    { "id": "e1", "from": "proc-rach", "to": "msg-msg1-preamble", "relation": "contains" },
+    { "id": "e2", "from": "proc-rach", "to": "msg-msg2-rar", "relation": "contains" },
+    { "id": "e3", "from": "proc-rach", "to": "msg-msg3", "relation": "contains" },
+    { "id": "e4", "from": "proc-rach", "to": "msg-msg4", "relation": "contains" },
+    { "id": "e5", "from": "msg-msg1-preamble", "to": "param-preamble-power", "relation": "uses_parameter" },
+    { "id": "e6", "from": "param-preamble-power", "to": "formula-prach-power-ramping", "relation": "computed_by" },
+    { "id": "e7", "from": "formula-prach-power-ramping", "to": "param-pathloss", "relation": "uses_parameter", "note": "초기 프리앰블 전력 추정에 DL 경로손실 사용" },
+    { "id": "e8", "from": "msg-msg2-rar", "to": "param-ta", "relation": "uses_parameter", "note": "RAR가 초기 TA 값을 전달" },
+    { "id": "e9", "from": "msg-msg2-rar", "to": "msg-msg3", "relation": "triggers" },
+    { "id": "e10", "from": "msg-msg3", "to": "msg-msg4", "relation": "triggers" },
+    { "id": "e11", "from": "proc-power-control-ul", "to": "param-tx-power-pusch", "relation": "uses_parameter" },
+    { "id": "e12", "from": "param-tx-power-pusch", "to": "formula-open-loop-tx-power", "relation": "computed_by" },
+    { "id": "e13", "from": "formula-open-loop-tx-power", "to": "param-pathloss", "relation": "uses_parameter" },
+    { "id": "e14", "from": "formula-open-loop-tx-power", "to": "param-p0", "relation": "uses_parameter" },
+    { "id": "e15", "from": "formula-open-loop-tx-power", "to": "param-alpha", "relation": "uses_parameter" },
+    { "id": "e16", "from": "param-pathloss", "to": "formula-pathloss", "relation": "computed_by" },
+    { "id": "e17", "from": "formula-pathloss", "to": "param-rsrp", "relation": "uses_parameter" },
+    { "id": "e18", "from": "proc-power-control-ul", "to": "param-phr", "relation": "contains" },
+    { "id": "e19", "from": "param-mpr", "to": "param-tx-power-pusch", "relation": "affects", "note": "MPR/A-MPR 백오프가 실제 방사 가능한 최대전력(P_CMAX)을 낮춤" },
+    { "id": "e20", "from": "proc-ta-update", "to": "msg-ta-command-mac-ce", "relation": "contains" },
+    { "id": "e21", "from": "msg-ta-command-mac-ce", "to": "param-ta", "relation": "uses_parameter" },
+    { "id": "e22", "from": "proc-ta-update", "to": "param-time-alignment-timer", "relation": "uses_parameter" },
+    { "id": "e23", "from": "param-time-alignment-timer", "to": "proc-rach", "relation": "affects", "note": "타이머 만료 시 UL 비동기 상태가 되어 RACH 재시도가 필요해짐" },
+    { "id": "e24", "from": "symptom-weak-coverage", "to": "param-rsrp", "relation": "explained_by", "note": "약전계는 낮은 RSRP로 관측됨" },
+    { "id": "e25", "from": "symptom-weak-coverage", "to": "formula-pathloss", "relation": "explained_by", "note": "낮은 RSRP가 경로손실 추정치를 키움" },
+    { "id": "e26", "from": "symptom-weak-coverage", "to": "symptom-high-tx-power", "relation": "causes" },
+    { "id": "e27", "from": "symptom-high-tx-power", "to": "formula-open-loop-tx-power", "relation": "explained_by", "note": "PL이 커지면 open-loop 요구 전력이 증가" },
+    { "id": "e28", "from": "symptom-high-tx-power", "to": "param-mpr", "relation": "explained_by", "note": "MPR 백오프가 겹치면 실제 방사 가능 전력이 더 줄어 증상이 악화" },
+    { "id": "e29", "from": "symptom-high-tx-power", "to": "symptom-negative-phr", "relation": "causes" },
+    { "id": "e30", "from": "symptom-negative-phr", "to": "param-phr", "relation": "explained_by" },
+    { "id": "e31", "from": "symptom-rach-failure", "to": "proc-rach", "relation": "explained_by" },
+    { "id": "e32", "from": "symptom-rach-failure", "to": "param-preamble-power", "relation": "explained_by", "note": "약전계에서 초기 추정 전력이 부족하면 응답 실패·재시도 증가" },
+    { "id": "e33", "from": "symptom-rach-failure", "to": "symptom-weak-coverage", "relation": "explained_by" },
+    { "id": "e34", "from": "proc-rlf", "to": "param-t310", "relation": "uses_parameter" },
+    { "id": "e35", "from": "proc-rlf", "to": "msg-rrc-reestablishment", "relation": "triggers" },
+    { "id": "e36", "from": "param-bler", "to": "proc-rlf", "relation": "affects", "note": "높은 BLER가 지속되면 out-of-sync 카운트(N310)가 누적되어 RLF로 이어짐" },
+    { "id": "e37", "from": "symptom-call-drop", "to": "proc-rlf", "relation": "explained_by" },
+    { "id": "e38", "from": "symptom-call-drop", "to": "msg-rrc-reestablishment", "relation": "explained_by", "note": "재수립 실패 시 통화가 끊어짐" },
+    { "id": "e39", "from": "symptom-call-drop", "to": "symptom-high-tx-power", "relation": "explained_by", "note": "전력 한계로 UL 링크를 유지하지 못해 RLF 유발 가능" },
+    { "id": "e40", "from": "symptom-call-drop", "to": "symptom-weak-coverage", "relation": "explained_by" },
+    { "id": "e41", "from": "symptom-call-drop", "to": "symptom-tx-power-too-low", "relation": "explained_by", "note": "실제 방사 전력 부족으로 UL 링크 유지 실패" },
+    { "id": "e42", "from": "symptom-call-fail", "to": "symptom-rach-failure", "relation": "explained_by" },
+    { "id": "e43", "from": "symptom-call-fail", "to": "proc-rach", "relation": "explained_by" },
+    { "id": "e44", "from": "symptom-no-service", "to": "proc-cell-selection", "relation": "explained_by" },
+    { "id": "e45", "from": "symptom-no-service", "to": "symptom-weak-coverage", "relation": "explained_by", "note": "극단적 약전계에서는 캠프온 가능한 셀 자체가 없음" },
+    { "id": "e46", "from": "symptom-mute", "to": "param-bler", "relation": "explained_by", "note": "짧은 구간 BLER 급증으로 음성 패킷 손실" },
+    { "id": "e47", "from": "symptom-mute", "to": "symptom-weak-coverage", "relation": "explained_by" },
+    { "id": "e48", "from": "symptom-tx-power-too-low", "to": "param-fbrx-power", "relation": "explained_by", "note": "피드백 측정 오차로 실제보다 낮게 방사" },
+    { "id": "e49", "from": "symptom-tx-power-too-low", "to": "param-mpr", "relation": "explained_by", "note": "과도한 MPR 백오프 설정 오류" },
+    { "id": "e50", "from": "symptom-tx-power-too-low", "to": "symptom-rach-failure", "relation": "causes" },
+    { "id": "e51", "from": "symptom-fbrx-power-error", "to": "param-fbrx-power", "relation": "explained_by" },
+    { "id": "e52", "from": "symptom-fbrx-power-error", "to": "symptom-tx-power-too-low", "relation": "causes" },
+    { "id": "e53", "from": "symptom-fbrx-power-error", "to": "symptom-high-tx-power", "relation": "causes", "note": "캘리브레이션 오차 방향에 따라 과다 방사로도 나타날 수 있음" },
+
+    { "id": "ca-edge-scelladd-uses-pcellscell", "from": "ca-proc-scell-addition", "to": "ca-concept-pcell-scell", "relation": "uses_parameter", "note": "SCell 추가 절차는 PCell/SCell 구조 정의를 전제로 동작함" },
+    { "id": "ca-edge-scelladd-triggers-actdeact", "from": "ca-proc-scell-addition", "to": "ca-proc-scell-activation-deactivation", "relation": "triggers", "note": "추가된 SCell은 비활성 상태로 시작하며 이후 활성화/비활성화 절차의 대상이 됨" },
+    { "id": "ca-edge-actdeact-contains-macce", "from": "ca-proc-scell-activation-deactivation", "to": "ca-msg-mac-ce-scell-actdeact", "relation": "contains", "note": "활성화/비활성화 절차는 이 MAC CE의 송수신으로 구현됨" },
+    { "id": "ca-edge-bandcomb-computedby-capability", "from": "ca-concept-band-combination", "to": "ca-proc-ue-capability-reporting", "relation": "computed_by", "note": "지원 가능한 밴드 조합 목록은 UE Capability 보고 절차의 결과로 결정됨" },
+    { "id": "ca-edge-noca-explainedby-bandcomb", "from": "ca-symptom-no-ca", "to": "ca-concept-band-combination", "relation": "explained_by", "note": "네트워크가 시도한 SCell 조합을 UE가 지원하지 않는 경우" },
+    { "id": "ca-edge-noca-explainedby-capability", "from": "ca-symptom-no-ca", "to": "ca-proc-ue-capability-reporting", "relation": "explained_by", "note": "UE Capability 미보고/필터링으로 네트워크가 CA 대상 밴드를 인지하지 못함" },
+    { "id": "ca-edge-noca-explainedby-scelladd", "from": "ca-symptom-no-ca", "to": "ca-proc-scell-addition", "relation": "explained_by", "note": "RRCReconfiguration을 통한 SCell 추가 자체가 실패하거나 거부됨" },
+    { "id": "ca-edge-weakcoverage-causes-noca", "from": "symptom-weak-coverage", "to": "ca-symptom-no-ca", "relation": "causes", "note": "SCell 후보 주파수의 약전계로 SCell 추가/활성화가 실패하는 경우" },
+    { "id": "ca-edge-rachfail-causes-noca", "from": "symptom-rach-failure", "to": "ca-symptom-no-ca", "relation": "causes", "note": "SCell 활성화 시 필요한 임의접속 실패로 SCell이 활성 상태로 전환되지 못함" },
+    { "id": "ca-edge-throughput-explainedby-actdeact", "from": "ca-symptom-ca-throughput-drop", "to": "ca-proc-scell-activation-deactivation", "relation": "explained_by", "note": "SCell의 잦은 비활성화 및 활성화 지연으로 실질 처리량 이득이 감소함" },
+    { "id": "ca-edge-bler-causes-throughput", "from": "param-bler", "to": "ca-symptom-ca-throughput-drop", "relation": "causes", "note": "SCell 채널 품질 저하(BLER 상승)로 낮은 MCS가 적용되어 CA 처리량이 저하됨" },
+    { "id": "endc-edge-sgnbadd-uses-mnsn", "from": "endc-proc-sgnb-addition", "to": "endc-concept-mn-sn", "relation": "uses_parameter", "note": "SgNB 추가는 MN 주도로 SN을 선정/제어하는 구조를 전제로 함" },
+    { "id": "endc-edge-sgnbadd-contains-mcgscg", "from": "endc-proc-sgnb-addition", "to": "endc-concept-mcg-scg", "relation": "contains", "note": "SgNB 추가 완료 시 UE에 SCG가 새로 구성됨" },
+    { "id": "endc-edge-sgnbadd-triggers-splitbearer", "from": "endc-proc-sgnb-addition", "to": "endc-concept-split-bearer", "relation": "triggers", "note": "베어러 옵션에 따라 SgNB 추가 시 split bearer가 구성될 수 있음" },
+    { "id": "endc-edge-scgfail-triggers-sgnbrelease", "from": "endc-proc-scg-failure", "to": "endc-proc-sgnb-release", "relation": "triggers", "note": "반복적인 SCG 실패 보고는 MN의 SgNB 해제 결정으로 이어질 수 있음" },
+    { "id": "endc-edge-scgfail-affects-mcgscg", "from": "endc-proc-scg-failure", "to": "endc-concept-mcg-scg", "relation": "affects", "note": "SCG 실패는 SCG 상태에 영향을 주며 MCG는 유지됨" },
+    { "id": "endc-edge-attachfail-explainedby-sgnbadd", "from": "endc-symptom-endc-attach-fail", "to": "endc-proc-sgnb-addition", "relation": "explained_by", "note": "SgNB 추가 절차 자체의 실패(응답 없음/거부/재구성 실패)" },
+    { "id": "endc-edge-attachfail-explainedby-capability", "from": "endc-symptom-endc-attach-fail", "to": "ca-proc-ue-capability-reporting", "relation": "explained_by", "note": "EN-DC 밴드조합도 동일한 UE Capability 보고 절차로 협상되므로 미보고 시 SgNB 추가 자체가 시도되지 않음" },
+    { "id": "endc-edge-weakcoverage-causes-attachfail", "from": "symptom-weak-coverage", "to": "endc-symptom-endc-attach-fail", "relation": "causes", "note": "NR SCG 후보 주파수의 약전계로 SgNB 추가가 실패하는 경우" },
+    { "id": "endc-edge-rachfail-causes-attachfail", "from": "symptom-rach-failure", "to": "endc-symptom-endc-attach-fail", "relation": "causes", "note": "SCG 측 임의접속 실패로 EN-DC 접속이 완료되지 못함" },
+    { "id": "endc-edge-scgdrop-explainedby-scgfailure", "from": "endc-symptom-scg-failure-drop", "to": "endc-proc-scg-failure", "relation": "explained_by", "note": "SCGFailureInformation 보고로 이어지는 SCG 측 문제가 근본 원인" },
+    { "id": "endc-edge-scgdrop-explainedby-splitbearer", "from": "endc-symptom-scg-failure-drop", "to": "endc-concept-split-bearer", "relation": "explained_by", "note": "split bearer의 SCG 경로 상실로 체감 속도가 MCG 단독 수준으로 급감함" },
+
+    { "id": "e-ho-01", "from": "meas-event-a1-a2", "to": "meas-report", "relation": "triggers", "note": "A1/A2 진입 조건 만족 시 UE가 측정 보고를 전송" },
+    { "id": "e-ho-02", "from": "meas-event-a3-a4-a5", "to": "meas-report", "relation": "triggers", "note": "A3/A4/A5 진입 조건 만족 시 UE가 측정 보고를 전송" },
+    { "id": "e-ho-03", "from": "meas-event-b1-b2", "to": "meas-report", "relation": "triggers", "note": "B1/B2 진입 조건 만족 시 UE가 측정 보고를 전송" },
+    { "id": "e-ho-04", "from": "meas-event-a3-a4-a5", "to": "meas-hysteresis", "relation": "uses_parameter" },
+    { "id": "e-ho-05", "from": "meas-event-a3-a4-a5", "to": "meas-time-to-trigger", "relation": "uses_parameter" },
+    { "id": "e-ho-06", "from": "meas-report", "to": "ho-procedure", "relation": "triggers", "note": "네트워크가 측정 보고 수신 후 핸드오버 여부를 결정" },
+    { "id": "e-ho-07", "from": "ho-procedure", "to": "ho-cho", "relation": "contains", "note": "CHO는 핸드오버 절차의 조건부 실행 변형" },
+    { "id": "e-ho-08", "from": "ho-procedure", "to": "ho-rrc-reconf-sync", "relation": "contains" },
+    { "id": "e-ho-09", "from": "ho-rrc-reconf-sync", "to": "ho-t304", "relation": "uses_parameter", "note": "메시지 수신 시 T304 타이머 시작" },
+    { "id": "e-ho-10", "from": "ho-rrc-reconf-sync", "to": "ho-random-access-target", "relation": "triggers" },
+    { "id": "e-ho-11", "from": "ho-t304", "to": "ho-failure", "relation": "triggers", "note": "T304 만료 시 HOF 선언" },
+    { "id": "e-ho-12", "from": "ho-random-access-target", "to": "ho-failure", "relation": "causes", "note": "타겟 셀 RA 실패도 HOF 조건 중 하나" },
+    { "id": "e-ho-13", "from": "ho-failure", "to": "msg-rrc-reestablishment", "relation": "triggers", "note": "HOF 발생 시 UE는 RLF와 마찬가지로 RRC 재수립 절차를 개시" },
+    { "id": "e-ho-14", "from": "ho-failure", "to": "proc-rlf", "relation": "affects", "note": "HOF와 RLF는 서로 다른 별개의 트리거 조건(T304 만료 vs T310 만료 등)을 가지나, 둘 다 UE로 하여금 유사한 복구 동작(재수립)을 하게 만든다는 점에서 관련됨. HOF가 RLF를 유발하는 것은 아님" },
+    { "id": "e-ho-15", "from": "ho-procedure", "to": "ho-ping-pong", "relation": "affects", "note": "짧은 시간 내 반복적인 핸드오버 실행이 핑퐁 지표를 구성" },
+    { "id": "e-ho-16", "from": "ho-ping-pong", "to": "meas-hysteresis", "relation": "mitigated_by", "note": "hysteresis(및 time-to-trigger) 값을 상향 조정하여 핑퐁 발생 완화" },
+    { "id": "e-ho-17", "from": "ho-symptom-failure", "to": "ho-failure", "relation": "explained_by" },
+    { "id": "e-ho-18", "from": "ho-symptom-failure", "to": "symptom-call-drop", "relation": "causes", "note": "HOF 이후 재수립까지 실패하면 콜드랍으로 이어짐" },
+    { "id": "e-ho-19", "from": "ho-symptom-failure", "to": "ho-cho", "relation": "mitigated_by", "note": "조건부 핸드오버 적용으로 시그널링 지연에 따른 실패율 감소" },
+    { "id": "e-ho-20", "from": "ho-symptom-ping-pong", "to": "ho-ping-pong", "relation": "explained_by" },
+    { "id": "e-ho-21", "from": "ho-symptom-ping-pong", "to": "ho-symptom-data-interruption", "relation": "causes", "note": "각 핑퐁 핸드오버 발생 시마다 짧은 데이터 중단이 누적됨" },
+    { "id": "e-ho-22", "from": "ho-symptom-data-interruption", "to": "ho-random-access-target", "relation": "explained_by", "note": "타겟 셀 동기화/랜덤 액세스 수행 구간이 데이터 중단의 직접 원인" },
+
+    { "id": "edge-rrc-idle-to-setup", "from": "rrc-state-idle", "to": "rrc-proc-setup", "relation": "triggers", "note": "상위 계층(NAS) 요청 또는 사용자 발신/응답 시 IDLE UE가 RRC Setup 절차를 개시" },
+    { "id": "edge-rrc-setup-to-connected", "from": "rrc-proc-setup", "to": "rrc-state-connected", "relation": "triggers", "note": "RRCSetupComplete 전송 완료 후 CONNECTED 상태로 전이" },
+    { "id": "edge-rrc-connected-to-release", "from": "rrc-state-connected", "to": "rrc-proc-release", "relation": "triggers", "note": "네트워크가 비활성 감지 또는 트래픽 종료로 RRCRelease 전송을 결정" },
+    { "id": "edge-rrc-release-to-idle", "from": "rrc-proc-release", "to": "rrc-state-idle", "relation": "triggers", "note": "RRCRelease에 suspendConfig가 포함되지 않은 경우 IDLE로 전이" },
+    { "id": "edge-rrc-release-to-inactive", "from": "rrc-proc-release", "to": "rrc-state-inactive", "relation": "triggers", "note": "RRCRelease에 suspendConfig가 포함된 경우 UE 컨텍스트를 보존하며 INACTIVE로 전이" },
+    { "id": "edge-rrc-inactive-to-resume", "from": "rrc-state-inactive", "to": "rrc-proc-resume", "relation": "triggers", "note": "상향 데이터 발생 또는 페이징 수신 시 INACTIVE UE가 RRC Resume 절차를 개시" },
+    { "id": "edge-rrc-resume-to-connected", "from": "rrc-proc-resume", "to": "rrc-state-connected", "relation": "triggers", "note": "RRCResume 성공 시 보존된 컨텍스트를 재활성화하여 CONNECTED로 복귀" },
+    { "id": "edge-paging-affects-idle", "from": "rrc-proc-paging", "to": "rrc-state-idle", "relation": "affects", "note": "IDLE 및 INACTIVE UE는 각자의 페이징 사이클에 따른 PO에서만 PDCCH(P-RNTI)를 모니터링" },
+    { "id": "edge-paging-triggers-setup", "from": "rrc-proc-paging", "to": "rrc-proc-setup", "relation": "triggers", "note": "MT(Mobile Terminated) 페이징 수신 시 IDLE UE가 RRC Setup 절차를 개시" },
+    { "id": "edge-paging-triggers-resume", "from": "rrc-proc-paging", "to": "rrc-proc-resume", "relation": "triggers", "note": "RAN Paging 수신 시 INACTIVE UE가 RRC Resume 절차를 개시" },
+    { "id": "edge-paging-computed-by-pfpo", "from": "rrc-proc-paging", "to": "rrc-formula-pf-po", "relation": "computed_by", "note": "UE가 모니터링해야 할 PF/PO 위치는 PF/PO 계산식으로 결정됨" },
+    { "id": "edge-pfpo-uses-cycle", "from": "rrc-formula-pf-po", "to": "rrc-param-paging-cycle", "relation": "uses_parameter", "note": "계산식의 T(페이징 사이클) 값을 파라미터로 사용" },
+    { "id": "edge-connected-contains-cdrx", "from": "rrc-state-connected", "to": "drx-proc-connected", "relation": "contains", "note": "네트워크가 DRX-Config를 설정한 경우 CONNECTED 상태 내에서 C-DRX가 동작" },
+    { "id": "edge-cdrx-uses-onduration", "from": "drx-proc-connected", "to": "drx-param-on-duration-timer", "relation": "uses_parameter" },
+    { "id": "edge-cdrx-uses-inactivity", "from": "drx-proc-connected", "to": "drx-param-inactivity-timer", "relation": "uses_parameter" },
+    { "id": "edge-cdrx-uses-longcycle", "from": "drx-proc-connected", "to": "drx-param-long-cycle", "relation": "uses_parameter" },
+    { "id": "edge-idle-uses-pagingcycle", "from": "rrc-state-idle", "to": "rrc-param-paging-cycle", "relation": "uses_parameter", "note": "IDLE/INACTIVE 모드의 DRX 동작은 페이징 사이클(T)로 결정되며, UE-specific/기본 사이클 중 짧은 값이 우선 적용됨" },
+    { "id": "edge-symptom-pagingmiss-explained-by-paging", "from": "rrc-symptom-paging-miss", "to": "rrc-proc-paging", "relation": "explained_by", "note": "페이징 절차의 PF/PO 타이밍에 UE가 정확히 깨어나 PDCCH를 디코딩하지 못하면 페이징 메시지를 놓치게 됨" },
+    { "id": "edge-symptom-pagingmiss-explained-by-cycle", "from": "rrc-symptom-paging-miss", "to": "rrc-param-paging-cycle", "relation": "explained_by", "note": "UE-specific/기본 페이징 사이클 설정 불일치, 또는 과도하게 긴 사이클로 인해 페이징 미수신 가능성이 증가" },
+    { "id": "edge-weakcoverage-causes-pagingmiss", "from": "symptom-weak-coverage", "to": "rrc-symptom-paging-miss", "relation": "causes", "note": "약전계에서 PDCCH(P-RNTI) 디코딩 실패로 페이징 메시지를 수신하지 못함" },
+    { "id": "edge-batterydrain-explained-by-inactivity", "from": "drx-symptom-battery-drain", "to": "drx-param-inactivity-timer", "relation": "explained_by", "note": "drx-InactivityTimer(및 onDurationTimer)가 과도하게 크면 트래픽 버스트마다 활성 구간이 길게 연장되어 배터리 소모가 증가" },
+    { "id": "edge-latency-explained-by-longcycle", "from": "drx-symptom-data-latency", "to": "drx-param-long-cycle", "relation": "explained_by", "note": "drx-LongCycle이 길수록 하향 데이터·페이징 도착 후 단말이 깨어나기까지 대기 시간이 증가" },
+
+    { "id": "e-rach2-01", "from": "proc-rach", "to": "rach2-proc-2step-rach", "relation": "contains", "note": "NR Rel-16에서 추가된 2-Step RA 변형" },
+    { "id": "e-rach2-02", "from": "rach2-proc-2step-rach", "to": "rach2-msg-msga", "relation": "contains" },
+    { "id": "e-rach2-03", "from": "rach2-proc-2step-rach", "to": "rach2-msg-msgb", "relation": "contains" },
+    { "id": "e-rach2-04", "from": "rach2-msg-msga", "to": "rach2-msg-msgb", "relation": "triggers" },
+    { "id": "e-rach2-05", "from": "rach2-msg-msgb", "to": "msg-msg2-rar", "relation": "affects", "note": "MsgB가 RAR 기능(TA/UL grant/C-RNTI)을 흡수해 대체" },
+    { "id": "e-rach2-06", "from": "proc-rach", "to": "rach2-proc-cbra", "relation": "contains" },
+    { "id": "e-rach2-07", "from": "proc-rach", "to": "rach2-proc-cfra", "relation": "contains" },
+    { "id": "e-rach2-08", "from": "rach2-proc-cbra", "to": "rach2-param-backoff-indicator", "relation": "uses_parameter" },
+    { "id": "e-rach2-09", "from": "rach2-proc-cbra", "to": "rach2-param-preamble-trans-max", "relation": "uses_parameter" },
+    { "id": "e-rach2-10", "from": "rach2-param-preamble-trans-max", "to": "symptom-rach-failure", "relation": "causes", "note": "최대 전송횟수 초과 시 RA 문제로 상위 계층 통보" },
+    { "id": "e-rach2-11", "from": "rach2-param-backoff-indicator", "to": "rach2-symptom-rach-retry-excessive", "relation": "causes" },
+    { "id": "e-rach2-12", "from": "rach2-proc-cfra", "to": "rach2-symptom-ho-access-delay", "relation": "causes", "note": "CFRA 실패 시 CBRA로 폴백하며 경쟁해소 단계 추가" },
+    { "id": "e-rach2-13", "from": "rach2-param-ra-response-window", "to": "msg-msg2-rar", "relation": "affects", "note": "대기창 내 RAR 미수신 시 재전송 유발" },
+    { "id": "e-pc2-01", "from": "proc-power-control-ul", "to": "pc2-formula-pucch-power-control", "relation": "contains" },
+    { "id": "e-pc2-02", "from": "proc-power-control-ul", "to": "pc2-formula-srs-power-control", "relation": "contains" },
+    { "id": "e-pc2-03", "from": "param-phr", "to": "pc2-param-phr-type2", "relation": "contains", "note": "PUSCH 기준 Type1 대비 PUCCH 기준 확장 유형" },
+    { "id": "e-pc2-04", "from": "pc2-param-phr-type3", "to": "pc2-formula-srs-power-control", "relation": "computed_by" },
+    { "id": "e-pc2-05", "from": "pc2-param-phr-type2", "to": "pc2-formula-pucch-power-control", "relation": "computed_by" },
+    { "id": "e-pc2-06", "from": "pc2-formula-pcmax", "to": "param-tx-power-pusch", "relation": "affects", "note": "Pcmax가 실제 PUSCH 송신전력의 상한으로 작용" },
+    { "id": "e-pc2-07", "from": "pc2-formula-pcmax", "to": "formula-open-loop-tx-power", "relation": "affects", "note": "오픈루프 전력제어 결과값이 Pcmax로 클램핑됨" },
+    { "id": "e-pc2-08", "from": "param-mpr", "to": "pc2-formula-pcmax", "relation": "affects" },
+    { "id": "e-pc2-09", "from": "pc2-param-p-mpr", "to": "pc2-formula-pcmax", "relation": "affects" },
+    { "id": "e-pc2-10", "from": "pc2-param-p-mpr", "to": "pc2-symptom-thermal-power-backoff", "relation": "causes" },
+    { "id": "e-pc2-11", "from": "pc2-param-p-mpr", "to": "pc2-symptom-sar-backoff-quality", "relation": "causes" },
+
+    { "id": "br-idle-cellselection", "from": "rrc-state-idle", "to": "proc-cell-selection", "relation": "affects", "note": "IDLE 상태에서는 캠프온 유지를 위해 셀 (재)선택 절차가 계속 동작함" },
+    { "id": "br-msg3-rrcsetup", "from": "msg-msg3", "to": "rrc-proc-setup", "relation": "triggers", "note": "RACH의 Msg3 자원으로 RRCSetupRequest가 전송됨" },
+    { "id": "br-connected-ho", "from": "rrc-state-connected", "to": "ho-procedure", "relation": "contains", "note": "네트워크 주도 이동성 관리(핸드오버)는 CONNECTED 상태에서만 발생" },
+    { "id": "br-connected-scelladd", "from": "rrc-state-connected", "to": "ca-proc-scell-addition", "relation": "contains", "note": "SCell 추가는 CONNECTED 상태를 전제로 함" },
+    { "id": "br-connected-sgnbadd", "from": "rrc-state-connected", "to": "endc-proc-sgnb-addition", "relation": "contains", "note": "SgNB 추가도 CONNECTED 상태를 전제로 함" },
+    { "id": "br-cfra-ho", "from": "rach2-proc-cfra", "to": "ho-random-access-target", "relation": "affects", "note": "핸드오버 시 타겟 셀 접속은 전형적으로 전용 프리앰블 기반 CFRA로 수행됨" }
+  ]
 }

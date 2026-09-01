@@ -1,6 +1,6 @@
 import type { Env } from '../index';
 
-const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
+const MODEL = '@cf/google/gemma-4-26b-a4b-it';
 
 function isAuthorized(request: Request, env: Env): boolean {
   const auth = request.headers.get('Authorization');
@@ -36,9 +36,17 @@ ${text}`;
     messages: [{ role: 'user', content: prompt }],
   });
 
-  const raw = typeof aiResponse === 'object' && aiResponse !== null && 'response' in aiResponse
-    ? (aiResponse as { response: string }).response
-    : String(aiResponse);
+  let raw = String(aiResponse);
+  if (aiResponse && typeof aiResponse === 'object') {
+    const obj = aiResponse as Record<string, unknown>;
+    if (typeof obj.response === 'string') {
+      raw = obj.response;
+    } else {
+      const choices = obj.choices as Array<{ message?: { content?: string } }> | undefined;
+      const content = choices?.[0]?.message?.content;
+      if (typeof content === 'string') raw = content;
+    }
+  }
 
   let draft: unknown = null;
   const jsonMatch = raw.match(/\{[\s\S]*\}/);
