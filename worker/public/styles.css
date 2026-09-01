@@ -191,6 +191,32 @@ main {
   margin-bottom: 3px;
 }
 
+.legend-toggle {
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.legend-toggle:hover { color: var(--text); }
+
+.legend-toggle .caret {
+  display: inline-block;
+  transition: transform 0.15s ease;
+  font-size: 10px;
+}
+
+.cy-legend.collapsed .legend-toggle .caret { transform: rotate(-90deg); }
+.cy-legend.collapsed .lg,
+.cy-legend.collapsed .legend-hint { display: none; }
+
 .legend-all {
   margin: 0;
   padding: 2px 7px;

@@ -458,6 +458,12 @@ document.getElementById('legend-all').addEventListener('click', () => {
 
 document.getElementById('toggle-all-labels').addEventListener('change', updateLabelVisibility);
 
+document.getElementById('legend-toggle').addEventListener('click', () => {
+  const legend = document.getElementById('cy-legend');
+  const collapsed = legend.classList.toggle('collapsed');
+  document.getElementById('legend-toggle').setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+});
+
 document.getElementById('cy-fit').addEventListener('click', () => {
   cy.elements().removeClass('highlighted dimmed');
   cy.animate({ fit: { eles: cy.nodes(':visible'), padding: 50 }, duration: 250, easing: 'ease-out' });
