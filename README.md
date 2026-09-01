@@ -18,8 +18,7 @@
 
 ```
 data/
-  seed-nodes.json, seed-edges.json   # 현재 배포된 그래프의 source of truth (103 노드 / 149 엣지)
-  domain-*.json                       # 아직 메인 그래프에 병합되지 않은 신규 도메인 초안 (아래 TODO 참고)
+  seed-nodes.json, seed-edges.json   # 현재 배포된 그래프의 source of truth (232 노드 / 347 엣지)
 docs/
   schema.md      # 노드/엣지 타입 정의
   roadmap.md      # 향후 확장 항목 (디바이스 인스턴스 레이어 등)
@@ -55,33 +54,20 @@ npx wrangler kv key put --binding=GRAPH_KV "graph:v1" --path=graph-seed.json --r
 
 | 상태 | 노드 | 엣지 |
 |---|---|---|
-| **배포됨** (`data/seed-nodes.json` + `seed-edges.json`, KV와 동기화 확인됨) | 103 | 149 |
-| **로컬 저장, 병합 대기** (`data/domain-*.json` 7개) | 129 | 195 |
+| **배포됨** (`data/seed-nodes.json` + `seed-edges.json`, KV와 동기화 확인됨) | 232 | 347 |
 
-배포된 도메인: RACH, 전력제어(open/closed-loop, PHR, MPR), TA, RLF, 셀 선택 개요, CA/EN-DC 기초,
-핸드오버/RRM 측정 기초, RRC 상태/DRX/페이징, 2-Step RACH, PUCCH/SRS 전력제어 기초.
+배포된 도메인: RACH(2-Step 포함), 전력제어(open/closed-loop, PHR, MPR), TA, RLF, 셀 선택/재선택 심화,
+CA/EN-DC(심화 포함: BWP, CSI, 동적 전력 공유, PSCell, EPS 폴백), 핸드오버/RRM(RLM, BFD/BFR, DAPS 포함),
+RRC 상태/DRX/페이징, PUCCH/SRS 전력제어 및 SRS 심화, 안테나/MIMO(1T4R·2T4R, 빔 관리, 풀파워 전송),
+퀄컴 모뎀 RF SW 벤더 레이어(MIPI RFFE, ASDIV, FBRx 폐루프, ET/APT, QXDM/FTM/QMI).
 
 ## TODO
 
-### 1. 신규 도메인 병합 (우선순위 높음)
-아래 7개 파일은 리서치 에이전트가 작성해 로컬에 저장만 되어 있고, 아직 `seed-nodes.json`/`seed-edges.json`에
-합쳐지지 않았습니다. 병합 시 기존 노드 id와 충돌 없음을 재검증(스크립트로 dedupe/dangling-edge 체크) 후
-KV 업로드 + `wrangler deploy`까지 필요합니다.
-
-- [ ] `data/domain-ca2.json` — CA 심화: BWP 전환, CSI 보고, 크로스 캐리어 스케줄링, SCell 휴면, sTAG, PUCCH 그룹, CA 전력 배분 (18 노드 / 27 엣지)
-- [ ] `data/domain-ant.json` — 안테나/MIMO: 1T4R·2T4R 표기, SRS 안테나 스위칭, UL/DL MIMO 레이어, 풀파워 전송, 빔 관리(BFD/BFR), LTE Tx 안테나 선택 (22 노드 / 32 엣지)
-- [ ] `data/domain-srs.json` — SRS 심화: 자원/세트 구조, usage, 트리거 방식, 캐리어 스위칭, TDD 심볼 제약 (16 노드 / 24 엣지)
-- [ ] `data/domain-endc2.json` — EN-DC 심화: 동적 전력 공유, SUO/UL 공유, PSCell 추가/변경, EPS 폴백, IMD 백오프 (19 노드 / 29 엣지)
-- [ ] `data/domain-qc.json` — 퀄컴 모뎀 RF SW(벤더 레이어): MIPI RFFE, ASDIV, RF 캘리브레이션, FBRx 폐루프, ET/APT, RFC 설정, QXDM/FTM/QMI (18 노드 / 28 엣지)
-- [ ] `data/domain-ho2.json` — 핸드오버 심화: RLM(N310/N311, Qout/Qin), BFD/BFR, 측정 갭/SMTC, DAPS, too-early/too-late HO (18 노드 / 29 엣지)
-- [ ] `data/domain-cs.json` — 셀 선택/재선택 심화: S-criteria, q-RxLevMin/Pcompensation, 우선순위 기반 재선택, R-criteria, RNAU (18 노드 / 26 엣지)
-
-병합 절차 참고(이전에 쓴 방식):
-1. PowerShell로 7개 파일 + 기존 seed 파일의 `nodes`/`edges`를 한 배열로 합침
-2. id 중복, `from`/`to`가 존재하지 않는 노드를 가리키는 엣지(dangling edge) 검사
-3. `seed-nodes.json`/`seed-edges.json`으로 재분리 저장 (UTF-8, **BOM 없이**)
-4. `worker/graph-seed.json`으로 재병합 → KV 업로드 → `wrangler deploy`
-5. 배포 후 `/api/graph`로 노드/엣지 수 확인, 그래프 화면에서 새 이슈 키워드 칩이 뜨는지 확인
+### 1. 신규 도메인 병합 (완료)
+7개 도메인 초안(CA 심화, 안테나/MIMO, SRS 심화, EN-DC 심화, 퀄컴 벤더 레이어, 핸드오버 심화, 셀 선택 심화)을
+`seed-nodes.json`/`seed-edges.json`에 병합 완료. id 중복 없음, dangling edge 없음, 그래프 연결성(BFS) 232/232
+확인. `Implementation` 노드 타입 / `vendor` 레이어를 프론트엔드(색상, 범례, 배지, 테두리 스타일, 마크다운 설명
+렌더링)에 반영하고 KV 업로드 + `wrangler deploy` 완료.
 
 ### 2. 데이터 검증
 - [ ] 모든 노드가 `verified: false` 상태 — LLM이 작성한 1차 초안이므로 **specRef의 TS 조항 번호는 실제 스펙과 대조 검증 필요**

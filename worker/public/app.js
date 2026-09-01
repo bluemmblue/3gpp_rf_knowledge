@@ -4,6 +4,7 @@ const TYPE_COLOR = {
   Parameter: '#9C8FB8',
   Formula: '#C9A45C',
   Symptom: '#C97B54',
+  Implementation: '#7A8471',
 };
 
 let graph = { nodes: [], edges: [] };
@@ -178,9 +179,9 @@ function renderGraph() {
           // 연결이 많은 노드를 크게 그려 시각적 위계를 만든다
           'width': (ele) => 20 + Math.min(ele.data('degree') ?? 0, 12) * 1.9,
           'height': (ele) => 20 + Math.min(ele.data('degree') ?? 0, 12) * 1.9,
-          'border-width': (ele) => (ele.data('layer') === 'application' ? 2 : 0),
-          'border-style': 'dashed',
-          'border-color': '#C97B54',
+          'border-width': (ele) => (ele.data('layer') === 'application' || ele.data('layer') === 'vendor' ? 2 : 0),
+          'border-style': (ele) => (ele.data('layer') === 'vendor' ? 'solid' : 'dashed'),
+          'border-color': (ele) => (ele.data('layer') === 'vendor' ? '#5C6650' : '#C97B54'),
           'z-index': 10,
         },
       },
@@ -346,9 +347,10 @@ function buildScenarioLines(node) {
 }
 
 function showNodeDetail(node) {
-  const badgeClass = node.layer === 'application' ? 'badge symptom' : 'badge';
+  const badgeClass =
+    node.layer === 'application' ? 'badge symptom' : node.layer === 'vendor' ? 'badge vendor' : 'badge';
   const specRef =
-    node.layer === 'base' && node.specRef ? `<div class="spec-ref">${escapeHtml(node.specRef)}</div>` : '';
+    node.specRef ? `<div class="spec-ref">${escapeHtml(node.specRef)}</div>` : '';
   const scenarioLines = buildScenarioLines(node);
   const scenarioHtml = scenarioLines.length
     ? `<div class="scenario"><strong>가능한 시나리오 / 관련 항목</strong><ul>${scenarioLines.map((l) => `<li>${l}</li>`).join('')}</ul></div>`
@@ -357,7 +359,7 @@ function showNodeDetail(node) {
   document.getElementById('node-detail').innerHTML = `
     <span class="${badgeClass}">${escapeHtml(node.type)}</span>
     <div><strong>${escapeHtml(node.name_ko)}</strong> (${escapeHtml(node.name_en)})</div>
-    <p>${escapeHtml(node.description)}</p>
+    <div class="node-desc md">${renderMarkdown(node.description)}</div>
     ${specRef}
     ${flowHtml}
     ${scenarioHtml}
