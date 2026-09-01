@@ -55,7 +55,7 @@ npx wrangler kv key put --binding=GRAPH_KV "graph:v1" --path=graph-seed.json --r
 
 | 상태 | 노드 | 엣지 |
 |---|---|---|
-| **배포됨** (`data/seed-nodes.json` + `seed-edges.json`, KV와 동기화 확인됨) | 267 | 402 |
+| **배포됨** (`data/seed-nodes.json` + `seed-edges.json`, KV와 동기화 확인됨) | 268 | 404 |
 
 배포된 도메인: RACH(2-Step 포함), 전력제어(open/closed-loop, PHR, MPR), TA, RLF, 셀 선택/재선택 심화,
 CA/EN-DC(심화 포함: BWP, CSI, 동적 전력 공유, PSCell, EPS 폴백), 핸드오버/RRM(RLM, BFD/BFR, DAPS 포함),
