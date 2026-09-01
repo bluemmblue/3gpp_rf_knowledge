@@ -78,10 +78,14 @@ RRC 상태/DRX/페이징, PUCCH/SRS 전력제어 및 SRS 심화, 안테나/MIMO(
       샘플 조항을 웹 검색으로 대조해 모두 정확함을 확인했으나, 232개 노드 전체의 조항 번호를 1:1로 대조한 것은 아니므로
       전수 검증 전까지는 `verified: false` 유지. 실제 스펙 PDF를 보유한 사용자의 최종 확인 권장.
 
-### 3. 정리
-- [ ] 관리자 큐레이션 UI는 제거했지만 백엔드 엔드포인트(`/api/curate`, `/api/nodes`, `/api/edges`, `ADMIN_TOKEN`)는 아직 살아있음 — 계속 쓸지, 완전히 제거할지 결정
-- [ ] 루트의 `graph-backup.json`, `index.html`(초기 Hello World 데모)이 여전히 필요한지 확인 후 정리
-- [ ] `worker/graph-seed.json`은 빌드 산출물이므로 `.gitignore`에 추가할지 검토
+### 3. 정리 (완료)
+- [x] 관리자 큐레이션 엔드포인트 완전 제거 — `worker/src/api/curate.ts`, `save.ts` 삭제, `index.ts`의 `/api/curate`
+      `/api/nodes` `/api/edges` 라우트 및 `ADMIN_TOKEN` 삭제, `graphStore.ts`의 미사용 `addNodes`/`addEdges`/`saveGraph`
+      삭제. 프론트엔드 큐레이션 UI가 이미 삭제되어 호출하는 곳이 없었음. `GraphNode`/`GraphEdge` 타입에 빠져 있던
+      `Implementation` 타입 / `vendor` 레이어도 함께 보정.
+- [x] 루트의 `graph-backup.json`(구버전 103노드/90엣지 스냅샷)과 `index.html`(Hello World 데모) 삭제 — 실제
+      대시보드는 `worker/public/`에 있고 source of truth는 `data/seed-*.json`이므로 둘 다 불필요.
+- [x] `worker/graph-seed.json`은 이미 `.gitignore`에 포함되어 있고 git에 커밋된 적 없음을 확인.
 
 ### 4. 향후 확장 (`docs/roadmap.md` 참고)
 - [ ] 디바이스 인스턴스 레이어: 칩셋/벤더별 실제 UE Capability 값 매핑 (3GPP 표준 스키마 위에 얹는 별도 레이어)

@@ -1,7 +1,7 @@
 export interface GraphNode {
   id: string;
-  type: 'Procedure' | 'Message' | 'Parameter' | 'Formula' | 'Symptom';
-  layer: 'base' | 'application';
+  type: 'Procedure' | 'Message' | 'Parameter' | 'Formula' | 'Symptom' | 'Implementation';
+  layer: 'base' | 'application' | 'vendor';
   name_ko: string;
   name_en: string;
   description: string;
@@ -29,28 +29,3 @@ export async function getGraph(kv: KVNamespace): Promise<Graph> {
   return stored ?? { nodes: [], edges: [] };
 }
 
-export async function saveGraph(kv: KVNamespace, graph: Graph): Promise<void> {
-  await kv.put(GRAPH_KEY, JSON.stringify(graph));
-}
-
-function upsertById<T extends { id: string }>(existing: T[], incoming: T[]): T[] {
-  const byId = new Map(existing.map((item) => [item.id, item]));
-  for (const item of incoming) {
-    byId.set(item.id, item);
-  }
-  return Array.from(byId.values());
-}
-
-export async function addNodes(kv: KVNamespace, nodes: GraphNode[]): Promise<Graph> {
-  const graph = await getGraph(kv);
-  graph.nodes = upsertById(graph.nodes, nodes);
-  await saveGraph(kv, graph);
-  return graph;
-}
-
-export async function addEdges(kv: KVNamespace, edges: GraphEdge[]): Promise<Graph> {
-  const graph = await getGraph(kv);
-  graph.edges = upsertById(graph.edges, edges);
-  await saveGraph(kv, graph);
-  return graph;
-}
