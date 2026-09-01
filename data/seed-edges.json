@@ -2361,6 +2361,370 @@
                       "to":  "srs-param-tdd-ul-symbols",
                       "relation":  "uses_parameter",
                       "note":  "TDD에서는 가용 UL 심볼 안에서만 SRS 전송이 가능함"
+                  },
+                  {
+                      "id":  "phy-e-impedance-reflection",
+                      "from":  "phy-tl-impedance",
+                      "to":  "phy-tl-reflection",
+                      "relation":  "affects",
+                      "note":  "임피던스 불일치가 반사를 만든다"
+                  },
+                  {
+                      "id":  "phy-e-reflection-vswr",
+                      "from":  "phy-tl-reflection",
+                      "to":  "phy-tl-vswr",
+                      "relation":  "computed_by",
+                      "note":  "반사계수로부터 VSWR 계산"
+                  },
+                  {
+                      "id":  "phy-e-reflection-rl",
+                      "from":  "phy-tl-reflection",
+                      "to":  "phy-tl-return-loss",
+                      "relation":  "computed_by",
+                      "note":  "반사계수로부터 리턴로스 계산"
+                  },
+                  {
+                      "id":  "phy-e-matching-impedance",
+                      "from":  "phy-tl-impedance-matching",
+                      "to":  "phy-tl-impedance",
+                      "relation":  "uses_parameter",
+                      "note":  "매칭의 목표값이 특성 임피던스"
+                  },
+                  {
+                      "id":  "phy-e-matching-vswr",
+                      "from":  "phy-tl-impedance-matching",
+                      "to":  "phy-tl-vswr",
+                      "relation":  "uses_parameter",
+                      "note":  "매칭 결과를 VSWR로 확인"
+                  },
+                  {
+                      "id":  "phy-e-smith-matching",
+                      "from":  "phy-tl-smith-chart",
+                      "to":  "phy-tl-impedance-matching",
+                      "relation":  "triggers",
+                      "note":  "Smith 차트로 매칭 소자값을 도출"
+                  },
+                  {
+                      "id":  "phy-e-microstrip-impedance",
+                      "from":  "phy-tl-microstrip",
+                      "to":  "phy-tl-impedance",
+                      "relation":  "affects",
+                      "note":  "라인 폭/기판이 임피던스를 결정"
+                  },
+                  {
+                      "id":  "phy-e-tl-microstrip",
+                      "from":  "phy-tl-transmission-line",
+                      "to":  "phy-tl-microstrip",
+                      "relation":  "contains",
+                      "note":  "마이크로스트립은 전송선의 한 구현 형태"
+                  },
+                  {
+                      "id":  "phy-e-na-sparam",
+                      "from":  "phy-sparam-network-analyzer",
+                      "to":  "phy-sparam-concept",
+                      "relation":  "uses_parameter",
+                      "note":  "네트워크 분석기가 S-파라미터를 측정"
+                  },
+                  {
+                      "id":  "phy-e-sparam-il",
+                      "from":  "phy-sparam-concept",
+                      "to":  "phy-sparam-insertion-loss",
+                      "relation":  "contains",
+                      "note":  "S21 크기로 표현되는 삽입손실"
+                  },
+                  {
+                      "id":  "phy-e-sparam-iso",
+                      "from":  "phy-sparam-concept",
+                      "to":  "phy-sparam-isolation",
+                      "relation":  "contains",
+                      "note":  "격리 포트 간 S-파라미터로 표현되는 격리도"
+                  },
+                  {
+                      "id":  "phy-e-sparam-gain",
+                      "from":  "phy-sparam-concept",
+                      "to":  "phy-sparam-gain",
+                      "relation":  "contains",
+                      "note":  "S21 dB로 표현되는 이득"
+                  },
+                  {
+                      "id":  "phy-e-vswr-il",
+                      "from":  "phy-tl-vswr",
+                      "to":  "phy-sparam-insertion-loss",
+                      "relation":  "affects",
+                      "note":  "반사가 크면 통과 경로의 실효 손실도 커진다"
+                  },
+                  {
+                      "id":  "phy-e-pa-p1db",
+                      "from":  "phy-component-pa",
+                      "to":  "phy-param-p1db",
+                      "relation":  "affects",
+                      "note":  "PA의 압축 특성이 P1dB로 정량화됨"
+                  },
+                  {
+                      "id":  "phy-e-pa-ip3",
+                      "from":  "phy-component-pa",
+                      "to":  "phy-param-ip3",
+                      "relation":  "affects",
+                      "note":  "PA의 비선형성이 IP3로 정량화됨"
+                  },
+                  {
+                      "id":  "phy-e-pa-linearity",
+                      "from":  "phy-component-pa",
+                      "to":  "phy-param-linearity",
+                      "relation":  "affects",
+                      "note":  "PA가 송신 경로 선형성의 핵심 결정 요소"
+                  },
+                  {
+                      "id":  "phy-e-lna-nf",
+                      "from":  "phy-component-lna",
+                      "to":  "phy-param-nf",
+                      "relation":  "affects",
+                      "note":  "LNA 잡음 특성이 수신 체인 NF를 좌우"
+                  },
+                  {
+                      "id":  "phy-e-mixer-imd",
+                      "from":  "phy-component-mixer",
+                      "to":  "phy-param-imd",
+                      "relation":  "affects",
+                      "note":  "믹서의 비선형 곱셈이 상호변조 성분을 만든다"
+                  },
+                  {
+                      "id":  "phy-e-mixer-harmonic",
+                      "from":  "phy-component-mixer",
+                      "to":  "phy-param-harmonic",
+                      "relation":  "affects",
+                      "note":  "믹서 동작이 고조파 성분도 함께 만든다"
+                  },
+                  {
+                      "id":  "phy-e-vcopll-evm",
+                      "from":  "phy-component-vco-pll",
+                      "to":  "phy-mod-evm",
+                      "relation":  "affects",
+                      "note":  "LO 위상잡음이 변조 품질을 열화시킨다"
+                  },
+                  {
+                      "id":  "phy-e-filter-il",
+                      "from":  "phy-component-filter",
+                      "to":  "phy-sparam-insertion-loss",
+                      "relation":  "affects",
+                      "note":  "필터 통과대역 손실"
+                  },
+                  {
+                      "id":  "phy-e-filter-harmonic",
+                      "from":  "phy-component-filter",
+                      "to":  "phy-param-harmonic",
+                      "relation":  "mitigated_by",
+                      "note":  "필터가 고조파를 억제"
+                  },
+                  {
+                      "id":  "phy-e-duplexer-iso",
+                      "from":  "phy-component-duplexer",
+                      "to":  "phy-sparam-isolation",
+                      "relation":  "affects",
+                      "note":  "듀플렉서의 송신-수신 간 격리도"
+                  },
+                  {
+                      "id":  "phy-e-coupler-il",
+                      "from":  "phy-component-coupler-divider",
+                      "to":  "phy-sparam-insertion-loss",
+                      "relation":  "uses_parameter",
+                      "note":  "커플링/분배 손실도 삽입손실로 표현"
+                  },
+                  {
+                      "id":  "phy-e-isolator-iso",
+                      "from":  "phy-component-isolator-circulator",
+                      "to":  "phy-sparam-isolation",
+                      "relation":  "affects",
+                      "note":  "역방향 신호를 격리/흡수"
+                  },
+                  {
+                      "id":  "phy-e-antenna-impedance",
+                      "from":  "phy-component-antenna",
+                      "to":  "phy-tl-impedance",
+                      "relation":  "uses_parameter",
+                      "note":  "안테나가 RF 회로 관점에서는 임피던스 부하로 취급됨"
+                  },
+                  {
+                      "id":  "phy-e-switch-il",
+                      "from":  "phy-component-switch",
+                      "to":  "phy-sparam-insertion-loss",
+                      "relation":  "affects",
+                      "note":  "스위치 통과 경로의 삽입손실"
+                  },
+                  {
+                      "id":  "phy-e-switch-iso",
+                      "from":  "phy-component-switch",
+                      "to":  "phy-sparam-isolation",
+                      "relation":  "affects",
+                      "note":  "스위치 차단 경로의 격리도"
+                  },
+                  {
+                      "id":  "phy-e-linearity-p1db",
+                      "from":  "phy-param-linearity",
+                      "to":  "phy-param-p1db",
+                      "relation":  "contains",
+                      "note":  "P1dB는 선형성을 나타내는 대표 지표 중 하나"
+                  },
+                  {
+                      "id":  "phy-e-linearity-ip3",
+                      "from":  "phy-param-linearity",
+                      "to":  "phy-param-ip3",
+                      "relation":  "contains",
+                      "note":  "IP3는 선형성을 나타내는 대표 지표 중 하나"
+                  },
+                  {
+                      "id":  "phy-e-ip3-imd",
+                      "from":  "phy-param-ip3",
+                      "to":  "phy-param-imd",
+                      "relation":  "affects",
+                      "note":  "IP3가 낮을수록 같은 입력에서 IMD가 커진다"
+                  },
+                  {
+                      "id":  "phy-e-p1db-imd",
+                      "from":  "phy-param-p1db",
+                      "to":  "phy-param-imd",
+                      "relation":  "affects",
+                      "note":  "P1dB에 가까워질수록 IMD가 급격히 커진다"
+                  },
+                  {
+                      "id":  "phy-e-iq-constellation",
+                      "from":  "phy-mod-iq",
+                      "to":  "phy-mod-constellation",
+                      "relation":  "affects",
+                      "note":  "I/Q 좌표가 성상도의 점으로 표시됨"
+                  },
+                  {
+                      "id":  "phy-e-iq-evm",
+                      "from":  "phy-mod-iq",
+                      "to":  "phy-mod-evm",
+                      "relation":  "affects",
+                      "note":  "I/Q 오차가 EVM으로 정량화됨"
+                  },
+                  {
+                      "id":  "phy-e-papr-p1db",
+                      "from":  "phy-mod-papr",
+                      "to":  "phy-param-p1db",
+                      "relation":  "affects",
+                      "note":  "PAPR이 높을수록 P1dB 대비 더 큰 백오프가 필요"
+                  },
+                  {
+                      "id":  "phy-e-constellation-evm",
+                      "from":  "phy-mod-constellation",
+                      "to":  "phy-mod-evm",
+                      "relation":  "affects",
+                      "note":  "변조 차수가 높을수록 같은 오차가 EVM 마진에 더 크게 영향"
+                  },
+                  {
+                      "id":  "br3-fbrx-p1db",
+                      "from":  "qc-fbrx-closed-loop",
+                      "to":  "phy-param-p1db",
+                      "relation":  "uses_parameter",
+                      "note":  "FBRx가 실측·보정하려는 목표가 결국 PA의 선형 동작 지점"
+                  },
+                  {
+                      "id":  "br3-etapt-papr",
+                      "from":  "qc-et-apt-tracking",
+                      "to":  "phy-mod-papr",
+                      "relation":  "uses_parameter",
+                      "note":  "ET/APT가 대응하는 신호 특성이 PAPR"
+                  },
+                  {
+                      "id":  "br3-etapt-pa",
+                      "from":  "qc-et-apt-tracking",
+                      "to":  "phy-component-pa",
+                      "relation":  "uses_parameter",
+                      "note":  "ET/APT가 제어하는 대상이 PA 공급 전압"
+                  },
+                  {
+                      "id":  "br3-mpr-linearity",
+                      "from":  "param-mpr",
+                      "to":  "phy-param-linearity",
+                      "relation":  "explained_by",
+                      "note":  "MPR 규정의 물리적 배경이 PA 선형성 확보"
+                  },
+                  {
+                      "id":  "br3-pmpr-linearity",
+                      "from":  "pc2-param-p-mpr",
+                      "to":  "phy-param-linearity",
+                      "relation":  "explained_by",
+                      "note":  "P-MPR도 결국 선형 동작 여유 확보가 목적"
+                  },
+                  {
+                      "id":  "br3-pcmax-p1db",
+                      "from":  "pc2-formula-pcmax",
+                      "to":  "phy-param-p1db",
+                      "relation":  "explained_by",
+                      "note":  "PCMAX 계산이 반영하는 하드웨어 한계가 PA의 P1dB"
+                  },
+                  {
+                      "id":  "br3-imdfreq-imd",
+                      "from":  "endc2-formula-imd-frequency",
+                      "to":  "phy-param-imd",
+                      "relation":  "explained_by",
+                      "note":  "이미 있는 IMD 주파수 계산식의 물리적 배경"
+                  },
+                  {
+                      "id":  "br3-imdfreq-harmonic",
+                      "from":  "endc2-formula-imd-frequency",
+                      "to":  "phy-param-harmonic",
+                      "relation":  "explained_by",
+                      "note":  "IMD 계산에는 고조파 성분도 관련"
+                  },
+                  {
+                      "id":  "br3-rffe-switch",
+                      "from":  "qc-rffe-control",
+                      "to":  "phy-component-switch",
+                      "relation":  "contains",
+                      "note":  "RFFE가 레지스터로 제어하는 물리적 대상이 RF 스위치"
+                  },
+                  {
+                      "id":  "br3-antpowersplit-il",
+                      "from":  "ant-power-split-loss-formula",
+                      "to":  "phy-sparam-insertion-loss",
+                      "relation":  "explained_by",
+                      "note":  "안테나 전력 분배 손실 계산식의 물리적 배경"
+                  },
+                  {
+                      "id":  "br3-antreq-matching",
+                      "from":  "ant-rf-requirements-vs-implementation",
+                      "to":  "phy-tl-impedance-matching",
+                      "relation":  "explained_by",
+                      "note":  "송수신 요구사항을 만족시키는 실제 구현이 임피던스 매칭"
+                  },
+                  {
+                      "id":  "br3-symptom-et-p1db",
+                      "from":  "qc-symptom-et-tracking-distortion",
+                      "to":  "phy-param-p1db",
+                      "relation":  "explained_by",
+                      "note":  "ET 트래킹 오정합 증상의 물리적 근원이 PA 압축 특성"
+                  },
+                  {
+                      "id":  "br3-symptom-et-papr",
+                      "from":  "qc-symptom-et-tracking-distortion",
+                      "to":  "phy-mod-papr",
+                      "relation":  "explained_by",
+                      "note":  "궤적이 신호의 PAPR 프로파일에 맞아야 함"
+                  },
+                  {
+                      "id":  "br3-symptom-calib-linearity",
+                      "from":  "qc-symptom-calibration-power-error",
+                      "to":  "phy-param-linearity",
+                      "relation":  "explained_by",
+                      "note":  "캘리브레이션은 결국 PA를 목표 선형 구간에서 정확히 동작시키기 위한 것"
+                  },
+                  {
+                      "id":  "br3-lna-bler",
+                      "from":  "phy-component-lna",
+                      "to":  "param-bler",
+                      "relation":  "affects",
+                      "note":  "LNA 잡음 특성이 나쁘면 실효 SNR이 낮아져 BLER이 악화된다"
+                  },
+                  {
+                      "id":  "br3-symptom-et-evm",
+                      "from":  "qc-symptom-et-tracking-distortion",
+                      "to":  "phy-mod-evm",
+                      "relation":  "explained_by",
+                      "note":  "전원 트래킹 오정합 증상에서 언급하는 신호 품질 저하가 곧 EVM 열화"
                   }
               ]
 }

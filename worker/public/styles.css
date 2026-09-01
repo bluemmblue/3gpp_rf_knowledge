@@ -353,6 +353,7 @@ main {
 
 .node-detail .badge.symptom { background: var(--symptom); }
 .node-detail .badge.vendor { background: #7A8471; }
+.node-detail .badge.physical { background: #6B7A94; }
 .node-detail .spec-ref { color: var(--text-muted); font-size: 12px; margin-top: 8px; }
 .node-detail .unverified { color: var(--danger); font-size: 11px; }
 

@@ -5,6 +5,7 @@ const TYPE_COLOR = {
   Formula: '#C9A45C',
   Symptom: '#C97B54',
   Implementation: '#7A8471',
+  Component: '#6B7A94',
 };
 
 let graph = { nodes: [], edges: [] };
@@ -184,9 +185,11 @@ function renderGraph() {
           // 연결이 많은 노드를 크게 그려 시각적 위계를 만든다
           'width': (ele) => 20 + Math.min(ele.data('degree') ?? 0, 12) * 1.9,
           'height': (ele) => 20 + Math.min(ele.data('degree') ?? 0, 12) * 1.9,
-          'border-width': (ele) => (ele.data('layer') === 'application' || ele.data('layer') === 'vendor' ? 2 : 0),
-          'border-style': (ele) => (ele.data('layer') === 'vendor' ? 'solid' : 'dashed'),
-          'border-color': (ele) => (ele.data('layer') === 'vendor' ? '#5C6650' : '#C97B54'),
+          'border-width': (ele) =>
+            ele.data('layer') === 'application' || ele.data('layer') === 'vendor' || ele.data('layer') === 'physical' ? 2 : 0,
+          'border-style': (ele) => (ele.data('layer') === 'application' ? 'dashed' : 'solid'),
+          'border-color': (ele) =>
+            ele.data('layer') === 'vendor' ? '#5C6650' : ele.data('layer') === 'physical' ? '#4A5568' : '#C97B54',
           'z-index': 10,
         },
       },
@@ -353,7 +356,13 @@ function buildScenarioLines(node) {
 
 function showNodeDetail(node) {
   const badgeClass =
-    node.layer === 'application' ? 'badge symptom' : node.layer === 'vendor' ? 'badge vendor' : 'badge';
+    node.layer === 'application'
+      ? 'badge symptom'
+      : node.layer === 'vendor'
+        ? 'badge vendor'
+        : node.layer === 'physical'
+          ? 'badge physical'
+          : 'badge';
   const specRef =
     node.specRef ? `<div class="spec-ref">${escapeHtml(node.specRef)}</div>` : '';
   const scenarioLines = buildScenarioLines(node);

@@ -10,18 +10,24 @@
 | `Formula` | 파라미터 간 계산식 | base |
 | `Symptom` | 실무 디버깅 키워드/증상 (예: 약전계) | application |
 | `Implementation` | 3GPP 비표준 벤더/칩셋 구현 기능 (예: 퀄컴 ASDIV, FBRx 폐루프 보정) | vendor |
+| `Component` | RF 회로 소자/블록 (예: PA, LNA, Mixer, Filter, Duplexer, Antenna) — 3GPP·벤더 무관한 범용 RF 회로 이론 | physical |
+
+`Component` 외에 `physical` 레이어에서는 `Parameter`/`Formula`/`Procedure` 타입을 그대로 재사용한다
+(예: P1dB·IP3 같은 지표는 `Parameter`, VSWR 계산식은 `Formula`, 임피던스 매칭은 `Procedure`). physical 레이어는
+"3GPP 표준이 뭐라고 정의하는가"(base)도 "벤더가 어떻게 구현했는가"(vendor)도 아닌 "RF 회로가 물리적으로 왜
+그렇게 동작하는가"를 다룬다 — 자세한 설계 배경은 [rf-physical-domain-plan.md](rf-physical-domain-plan.md) 참고.
 
 ## 노드 공통 필드
 
 ```json
 {
   "id": "string (kebab-case, 고유)",
-  "type": "Procedure | Message | Parameter | Formula | Symptom | Implementation",
-  "layer": "base | application | vendor",
+  "type": "Procedure | Message | Parameter | Formula | Symptom | Implementation | Component",
+  "layer": "base | application | vendor | physical",
   "name_ko": "string",
   "name_en": "string",
   "description": "string",
-  "specRef": "string, 예: 'TS 38.213 §7.1.1' (base 레이어 필수). vendor 레이어는 '3GPP 비표준 — ...' 형태로 비표준임을 명시하고, 관련 있는 표준 조항이 있으면 함께 적는다.",
+  "specRef": "string, 예: 'TS 38.213 §7.1.1' (base 레이어 필수). vendor 레이어는 '3GPP 비표준 — ...' 형태로, physical 레이어는 '일반 RF 회로 이론 — 3GPP 비표준' 형태로 비표준임을 명시하고, 관련 있는 표준 조항이 있으면 함께 적는다.",
   "verified": "boolean, 기본값 false — 사용자가 조항/공식을 직접 검증하면 true로 변경",
   "flow": "string, optional — Procedure 노드 전용. 메시지/단계 순서를 화살표로 나타낸 한 줄 흐름도. 예: 'UE → (Msg1: Preamble) → gNB → (Msg2: RAR, TA) → UE → (Msg3) → gNB → (Msg4) → UE'"
 }

@@ -11,6 +11,7 @@
 - **기반 레이어(base)**: 3GPP 표준 절차(Procedure)·메시지(Message)·파라미터(Parameter)·공식(Formula)
 - **응용 레이어(application)**: 약전계, 콜드랍, RACH 실패 같은 실무 증상(Symptom) 키워드가 기반 레이어 노드에 `explained_by`/`causes`로 연결됨
 - **벤더 레이어(vendor)**: 3GPP 비표준 구현 영역(예: 퀄컴 모뎀 RF SW — MIPI RFFE, ASDIV, FBRx 폐루프 보정 등)을 별도 `Implementation` 타입으로 구분
+- **물리 레이어(physical)**: 3GPP·벤더 어느 쪽에도 속하지 않는 범용 RF 회로 이론(임피던스 매칭, S-파라미터, PA/LNA/필터 등 소자, P1dB·IP3·EVM 같은 왜곡·선형성 지표)을 `Component` 타입으로 구분 — `증상 → 벤더 구현 → 물리적 원인`까지 인과 체인이 이어짐
 - 이슈 키워드 클릭 → 그래프 강조 + 인과 체인 설명 자동 표시
 - 대화형 챗봇(`/api/ask`, SSE 스트리밍)이 그래프를 근거로 답변하고, 관련 노드를 자동으로 하이라이트
 
@@ -54,12 +55,13 @@ npx wrangler kv key put --binding=GRAPH_KV "graph:v1" --path=graph-seed.json --r
 
 | 상태 | 노드 | 엣지 |
 |---|---|---|
-| **배포됨** (`data/seed-nodes.json` + `seed-edges.json`, KV와 동기화 확인됨) | 232 | 347 |
+| **배포됨** (`data/seed-nodes.json` + `seed-edges.json`, KV와 동기화 확인됨) | 265 | 399 |
 
 배포된 도메인: RACH(2-Step 포함), 전력제어(open/closed-loop, PHR, MPR), TA, RLF, 셀 선택/재선택 심화,
 CA/EN-DC(심화 포함: BWP, CSI, 동적 전력 공유, PSCell, EPS 폴백), 핸드오버/RRM(RLM, BFD/BFR, DAPS 포함),
 RRC 상태/DRX/페이징, PUCCH/SRS 전력제어 및 SRS 심화, 안테나/MIMO(1T4R·2T4R, 빔 관리, 풀파워 전송),
-퀄컴 모뎀 RF SW 벤더 레이어(MIPI RFFE, ASDIV, FBRx 폐루프, ET/APT, QXDM/FTM/QMI).
+퀄컴 모뎀 RF SW 벤더 레이어(MIPI RFFE, ASDIV, FBRx 폐루프, ET/APT, QXDM/FTM/QMI),
+RF 회로 물리 레이어(전송선/임피던스, S-파라미터, PA/LNA/믹서/필터/듀플렉서 등 소자, P1dB/IP3/IMD/NF/EVM/PAPR).
 
 ## TODO
 
@@ -92,3 +94,13 @@ RRC 상태/DRX/페이징, PUCCH/SRS 전력제어 및 SRS 심화, 안테나/MIMO(
 - 디바이스 인스턴스 레이어: 칩셋/벤더별 실제 UE Capability 값 매핑 (3GPP 표준 스키마 위에 얹는 별도 레이어)
 - 검색을 키워드 매칭 → 임베딩 기반 유사도 검색(Vectorize)으로 고도화
 - 그래프 규모가 커지면 KV 단일 blob → D1(SQL) 전환 검토
+
+### 5. RF Frontend Physical 지식 레이어 추가 (완료)
+[rf-physical-domain-plan.md](docs/rf-physical-domain-plan.md)에서 계획한 4번째 레이어(`physical`)를 구현.
+전송선/임피던스, S-파라미터, RF 소자(PA/LNA/믹서/VCO·PLL/필터/듀플렉서/커플러/아이솔레이터/안테나/스위치 —
+신규 `Component` 타입), 왜곡·선형성 지표(P1dB/IP3/IMD/고조파/NF/선형성), 변조·신호 기초(I/Q/EVM/PAPR/성상도)
+33개 노드를 추가하고, `qc-fbrx-closed-loop`/`qc-et-apt-tracking`/`param-mpr`/`endc2-formula-imd-frequency` 등
+기존 base/vendor 노드와 15개의 브릿지 엣지로 연결해 `증상 → 벤더 구현 → 물리적 원인` 인과 체인을 완성.
+id 중복 없음, dangling edge 없음, 그래프 연결성(BFS) 265/265 확인. `Component` 타입/`physical` 레이어를
+프론트엔드(색상, 범례, 배지, 테두리 스타일)에 반영하고 KV 업로드 + `wrangler deploy` 완료.
+참고 자료(rfdh.com)는 목차/주제 범위만 참고했고 서술은 직접 작성 — `rf-physical-domain-plan.md` 6절 참고.

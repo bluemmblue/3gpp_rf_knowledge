@@ -2301,6 +2301,336 @@
                       "name_en":  "Access Failure Due to SIB1 Acquisition Failure",
                       "description":  "단말이 SSB를 찾아 동기까지 잡았고 RSRP도 나쁘지 않은데, SIB1을 끝내 읽지 못해 그 셀에서 아무 접속도 시도하지 못하는 증상이다. 로그에서는 MIB 복호 성공 후 SIB1 수신 타임아웃이 반복되고 결국 다른 주파수로 스캔이 넘어가며, 상위 계층에는 그냥 No Service나 접속 실패로만 보인다. 흔한 원인은 MIB의 pdcch-ConfigSIB1 및 SSB-초기BWP 주파수 오프셋 설정 오류, SIB1 전송 빔/전력 부족, 강한 인접 채널 간섭이나 PCI 충돌로 인한 PDSCH 복호 실패, 그리고 셀 소프트웨어 이슈다. SIB1에는 RACH 설정과 q-RxLevMin이 들어 있어 이것 없이는 원천적으로 랜덤 액세스 자체가 불가능하므로, 신규 개통 셀에서 특정 단말·특정 지점만 접속 실패가 나면 SIB1 복호 성공률을 가장 먼저 확인해야 한다.",
                       "verified":  false
+                  },
+                  {
+                      "id":  "phy-tl-impedance",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "특성 임피던스 (50Ω)",
+                      "name_en":  "Characteristic Impedance (50Ω)",
+                      "description":  "전송선을 따라 흐르는 전압과 전류의 비로 정의되는 값으로, RF 회로의 소스·전송선·부하가 이 값으로 통일되어 있으면 신호가 반사 없이 전달된다. 무선통신 업계가 관행적으로 50Ω을 표준으로 쓰는 이유는 전력 전달 효율과 저손실 사이의 절충점이기 때문이며, 그 결과 커넥터·케이블·계측기·RFIC 입출력단이 모두 50Ω 기준으로 설계된다. RF S/W 엔지니어에게 중요한 이유는, PA 출력단부터 안테나까지 이어지는 경로의 임피던스가 어긋나는 순간마다 반사가 생겨 실제 방사 전력이 목표보다 줄어들기 때문이다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-tl-transmission-line",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "전송선 개념",
+                      "name_en":  "Transmission Line",
+                      "description":  "신호의 파장에 비해 물리적 길이가 무시할 수 없을 만큼 긴 도체 경로로, 일반 회로처럼 전압이 순간적으로 전체에 동일하게 걸리지 않고 위치에 따라 위상이 달라지는 파동 현상으로 다뤄야 하는 구간이다. RF 주파수에서는 PCB 위의 배선 한 줄도 전송선으로 취급해야 하며, 그렇지 않으면 실제 회로 동작이 설계와 어긋난다. RF S/W 엔지니어 입장에서는 안테나까지 이어지는 모든 경로(PA 출력, 필터, 스위치, 커넥터, 케이블)가 전송선이며, 각 구간의 길이·재질이 반사와 손실에 영향을 준다는 점을 이해하는 것이 출발점이다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-tl-reflection",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "반사와 정재파",
+                      "name_en":  "Reflection and Standing Wave",
+                      "description":  "전송선을 따라가던 신호가 임피던스가 바뀌는 지점(커넥터, 부품 경계, 손상된 케이블 등)을 만나면 일부가 반사되어 원래 방향과 반대로 되돌아가고, 진행파와 반사파가 겹치면서 위치에 따라 진폭이 커졌다 작아졌다 하는 정재파가 생긴다. 반사가 크면 송신 측에서 낸 전력 중 일부가 부하(안테나)에 전달되지 못하고 되돌아와 PA나 전단 회로에 스트레스를 주기도 한다. 실무에서는 정재파비(VSWR)로 반사 정도를 정량화해 경로 상태를 점검한다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-tl-vswr",
+                      "type":  "Formula",
+                      "layer":  "physical",
+                      "name_ko":  "VSWR (전압 정재파비)",
+                      "name_en":  "Voltage Standing Wave Ratio",
+                      "description":  "반사계수 Γ의 크기로부터 VSWR = (1+|Γ|)/(1-|Γ|)로 계산되는 지표로, 1.0이면 반사가 전혀 없는 완전 정합 상태이고 값이 커질수록 반사가 크다는 뜻이다. 안테나 튜닝, 그립/근접 상황에 따른 안테나 임피던스 변화, 커넥터 불량 진단 등 실무 전반에서 가장 먼저 확인하는 수치다. RF S/W 엔지니어는 VSWR이 나쁜 상태에서는 표준이 계산한 목표 송신 전력을 그대로 걸어도 실제 방사 전력이 그만큼 나오지 않는다는 점을 감안해 문제를 해석해야 한다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-tl-return-loss",
+                      "type":  "Formula",
+                      "layer":  "physical",
+                      "name_ko":  "리턴 로스",
+                      "name_en":  "Return Loss",
+                      "description":  "입사 전력 대비 반사되어 돌아온 전력의 비를 dB로 나타낸 값으로, RL(dB) = -20·log10(|Γ|)로 계산되며 VSWR과 1:1로 환산 가능한 동일한 정보를 dB 스케일로 표현한 것이다. 값이 클수록(예: 20dB 이상) 반사가 작고 정합이 좋다는 뜻이며, 부호에 유의해야 하는 VSWR과 달리 dB 값 하나로 바로 비교하기 편해 계측기 스펙이나 안테나 성능 문서에서 자주 쓰인다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-tl-impedance-matching",
+                      "type":  "Procedure",
+                      "layer":  "physical",
+                      "name_ko":  "임피던스 매칭",
+                      "name_en":  "Impedance Matching",
+                      "description":  "소스와 부하의 임피던스가 다를 때 그 사이에 인덕터·커패시터 조합(집중소자 매칭)이나 특정 길이의 전송선 패턴(분산소자 매칭)을 넣어 반사를 최소화하는 설계 작업이다. 목표 주파수 대역에서만 정합이 맞아도 되는지, 넓은 대역에서 맞아야 하는지에 따라 회로 복잡도가 달라지고, 실제 기기에서는 손 그립이나 케이스 재질처럼 설계 시점에 없던 부하 변화까지 고려해야 하는 경우가 많다. RF S/W 엔지니어에게는 직접 설계하는 영역은 아니지만, 매칭이 특정 조건(그립, 온도, 특정 채널)에서 어긋나는 게 필드 이슈의 원인일 수 있다는 것을 아는 게 중요하다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-tl-microstrip",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "마이크로스트립 라인",
+                      "name_en":  "Microstrip Line",
+                      "description":  "기판 위에 접지면을 깔고 그 위 절연층 위에 도체 패턴을 그려 만드는 가장 흔한 형태의 PCB 전송선으로, 라인의 폭·두께·기판 유전율에 따라 특성 임피던스가 결정된다. 동축 케이블처럼 완전히 감싸는 구조가 아니어서 제작이 쉽고 부품 실장이 편한 대신, 주변 금속·부품 배치의 영향을 받기 쉬워 레이아웃이 곧 회로 특성의 일부가 된다. RF S/W 엔지니어가 직접 설계하진 않아도, 같은 회로도라도 PCB 리비전에 따라 실제 특성이 달라질 수 있다는 배경 지식으로 유용하다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-tl-smith-chart",
+                      "type":  "Procedure",
+                      "layer":  "physical",
+                      "name_ko":  "Smith 차트 활용",
+                      "name_en":  "Using the Smith Chart",
+                      "description":  "복소 임피던스(저항 성분 + 리액턴스 성분)를 반사계수 평면 위에 원형 좌표로 표시해, 임피던스 값을 계산기 없이도 시각적으로 다루고 매칭 소자를 추가했을 때 임피던스가 어떻게 이동하는지 직관적으로 추적할 수 있게 해주는 그래프 도구다. RF 설계자가 매칭 회로를 반복적으로 조정(인덕터/커패시터 값 조합 탐색)할 때 표준적으로 쓰이며, 계측기나 시뮬레이터도 측정 결과를 Smith 차트 형태로 보여주는 경우가 많다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-sparam-concept",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "S-파라미터 (S11/S21/S12/S22)",
+                      "name_en":  "S-Parameters",
+                      "description":  "RF 소자를 입출력 포트를 가진 블랙박스로 보고, 각 포트에 신호를 넣었을 때 반사되어 나오는 비율(S11, S22)과 다른 포트로 전달되는 비율(S21, S12)로 그 소자의 동작을 통째로 기술하는 방법이다. 내부 회로를 몰라도 S-파라미터만 있으면 이득·손실·정합 상태·격리도를 모두 유도할 수 있어, 필터·증폭기·스위치 등 거의 모든 RF 부품의 데이터시트가 이 형식으로 스펙을 제공한다. RF S/W 엔지니어가 부품 데이터시트를 읽을 때 가장 먼저 마주치는 표기법이다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-sparam-insertion-loss",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "삽입 손실",
+                      "name_en":  "Insertion Loss",
+                      "description":  "신호가 어떤 소자(필터, 스위치, 커넥터, 케이블 등)를 통과할 때 얼마나 감쇠되는지를 dB로 나타낸 값으로, S21의 크기를 dB로 표현한 것과 같다. 경로상의 모든 소자의 삽입 손실이 누적되므로, 안테나까지 가는 경로에 스위치·듀플렉서·커플러가 많이 끼어 있을수록 같은 PA 출력이라도 실제 방사 전력은 줄어든다. RF S/W 엔지니어가 \u0027목표 전력은 정상인데 실측 전력이 낮다\u0027는 문제를 진단할 때, 경로 삽입 손실이 설계값보다 커졌는지가 유력한 원인 중 하나다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-sparam-isolation",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "격리도",
+                      "name_en":  "Isolation",
+                      "description":  "한 포트로 들어간 신호가 격리되어야 할 다른 포트로 얼마나 새어나가는지를 dB로 나타낸 값으로, 값이 클수록(예: 40dB 이상) 격리가 잘 되고 있다는 뜻이다. 듀플렉서에서 송신 신호가 수신 경로로 누설되는 정도, CA 안테나 포트 사이의 간섭, 스위치가 꺼진 경로로 신호가 새는 정도 등이 모두 격리도로 표현된다. 격리도가 나쁘면 자기 송신 신호가 자기 수신단의 잡음원이 되는 자기간섭(self-interference) 문제로 이어진다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-sparam-gain",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "이득 (S21, dB)",
+                      "name_en":  "Gain",
+                      "description":  "증폭기처럼 신호를 키워주는 소자에서 출력 전력이 입력 전력보다 얼마나 큰지를 dB로 나타낸 값으로, S21이 1보다 커서(0dB보다 커서) 신호가 증폭됨을 의미하는 경우다. 이득은 주파수·온도·입력 전력 레벨에 따라 달라지며, 특히 입력이 커질수록 이득이 일정하게 유지되지 않고 줄어드는 구간(압축)에 들어가는 것이 PA의 선형성 문제와 직결된다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-sparam-network-analyzer",
+                      "type":  "Procedure",
+                      "layer":  "physical",
+                      "name_ko":  "네트워크 분석기 측정",
+                      "name_en":  "Network Analyzer Measurement",
+                      "description":  "RF 소자나 경로에 알려진 주파수 스윕 신호를 넣고 반사·투과되는 신호를 측정해 S-파라미터를 직접 구해주는 계측 절차다. 생산 라인의 RF 검사, 안테나 튜닝, 필터/듀플렉서 특성 확인 등 RF 하드웨어 검증의 기본 도구이며, 측정 전 표준 부하(오픈/쇼트/50Ω 등)로 보정(calibration)하지 않으면 케이블·커넥터 자체의 특성이 측정값에 섞여 들어간다는 점이 실무에서 자주 발생하는 실수다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-component-pa",
+                      "type":  "Component",
+                      "layer":  "physical",
+                      "name_ko":  "전력 증폭기 (PA)",
+                      "name_en":  "Power Amplifier",
+                      "description":  "베이스밴드/트랜시버가 만든 작은 신호를 안테나로 방사할 수 있는 수준의 큰 전력으로 키워주는 송신단의 핵심 소자다. 입력이 작을 때는 출력이 입력에 비례해 선형적으로 늘지만, 입력이 일정 수준을 넘으면 전원 전압 한계 등으로 더 이상 비례하지 못하고 이득이 줄어드는 압축 영역에 들어간다. 이 비선형 구간에서 신호 왜곡과 인접 채널 누설이 급격히 커지기 때문에, RF S/W 엔지니어가 다루는 목표 전력·전력 백오프·ET/APT 트래킹 같은 이슈의 상당수가 결국 PA를 선형 영역 안에서 동작시키는 문제로 귀결된다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준 (관련 표준: TS 38.101-1 송신기 요구사항)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-component-lna",
+                      "type":  "Component",
+                      "layer":  "physical",
+                      "name_ko":  "저잡음 증폭기 (LNA)",
+                      "name_en":  "Low Noise Amplifier",
+                      "description":  "안테나가 받은 매우 약한 수신 신호를 이후 단(믹서, ADC)이 처리할 수 있는 수준으로 키우면서, 그 과정에서 자체적으로 잡음을 최대한 적게 더하도록 설계된 수신단 첫 증폭 소자다. 수신 체인에서 가장 앞에 위치할수록 전체 수신기 잡음 특성에 미치는 영향이 크다는 원리(프리스 공식)가 있어, LNA의 잡음 특성이 나쁘면 뒷단이 아무리 좋아도 전체 수신 감도가 개선되지 않는다. 이는 커버리지가 나쁠 때 왜 특정 밴드/경로에서 유독 감도가 낮은지 진단할 때 확인해야 하는 지점이다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준 (관련 표준: TS 38.101-1 수신기 요구사항)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-component-mixer",
+                      "type":  "Component",
+                      "layer":  "physical",
+                      "name_ko":  "믹서 (주파수 변환기)",
+                      "name_en":  "Mixer",
+                      "description":  "입력 신호와 국부발진기(LO) 신호를 곱해 두 주파수의 합과 차에 해당하는 새로운 주파수로 신호를 옮겨주는 소자로, 수신단에서는 RF 신호를 처리하기 쉬운 IF/베이스밴드로 내리고(다운컨버전), 송신단에서는 베이스밴드 신호를 실제 방사 주파수로 올리는(업컨버전) 데 쓰인다. 이 곱셈 동작은 원리상 비선형이라 원하는 합/차 주파수 외에도 원치 않는 혼변조 성분을 함께 만들어내며, 그 부산물이 스퓨리어스나 이미지 주파수 간섭의 원인이 된다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-component-vco-pll",
+                      "type":  "Component",
+                      "layer":  "physical",
+                      "name_ko":  "VCO/PLL (국부발진기)",
+                      "name_en":  "VCO / PLL (Local Oscillator)",
+                      "description":  "믹서에 넣어줄 기준 주파수(LO)를 만들어내는 회로로, 전압으로 주파수를 조절하는 VCO를 위상동기루프(PLL)로 기준 클럭에 락(lock)시켜 원하는 채널 주파수를 정밀하게 생성한다. LO 신호에 이상적이지 않은 위상 흔들림(위상 잡음)이 섞이면 그 잡음이 믹서를 거치며 신호에 함께 실려, 변조 품질(EVM)을 떨어뜨리거나 인접 채널의 강한 신호가 자기 채널로 새어 들어오는 현상(reciprocal mixing)을 유발한다. 채널을 자주 바꾸는 CA/핸드오버 상황에서는 PLL이 새 주파수에 안정적으로 락되는 데 걸리는 시간도 성능에 영향을 준다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-component-filter",
+                      "type":  "Component",
+                      "layer":  "physical",
+                      "name_ko":  "필터 (LPF/HPF/BPF)",
+                      "name_en":  "Filter",
+                      "description":  "원하는 주파수 대역의 신호는 통과시키고 그 외 대역은 감쇠시키는 소자로, 저역통과(LPF)·고역통과(HPF)·대역통과(BPF) 등으로 구분된다. 송신단에서는 PA가 만들어내는 고조파·스퓨리어스가 다른 밴드나 수신 대역으로 새어나가지 않도록 억제하고, 수신단에서는 원하는 대역 밖의 강한 방해 신호가 LNA를 포화시키기 전에 걸러낸다. 통과대역 안에서도 완벽히 무손실은 아니어서, 필터 자체의 삽입 손실이 송수신 경로 전체 손실 예산의 일부를 차지한다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준 (관련 표준: TS 38.101-1 스퓨리어스 방사/차단 요구사항)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-component-duplexer",
+                      "type":  "Component",
+                      "layer":  "physical",
+                      "name_ko":  "듀플렉서/디플렉서",
+                      "name_en":  "Duplexer / Diplexer",
+                      "description":  "듀플렉서는 하나의 안테나 포트를 공유하면서 송신 신호와 수신 신호가 서로 섞이지 않도록 분리해주는 필터 조합 소자로, FDD 밴드에서 송신 대역 필터와 수신 대역 필터를 한 부품에 결합한 형태다. 디플렉서는 서로 다른 두 주파수 대역(예: 저대역/고대역)의 신호를 하나의 안테나 경로로 합치거나 나누는 데 쓰인다. 듀플렉서의 송신-수신 간 격리도가 부족하면 자신의 강한 송신 신호가 자신의 수신단을 막아버리는 자기간섭이 생긴다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-component-coupler-divider",
+                      "type":  "Component",
+                      "layer":  "physical",
+                      "name_ko":  "커플러/디바이더",
+                      "name_en":  "Coupler / Divider",
+                      "description":  "커플러는 주 경로를 흐르는 신호의 일부(예: -20dB 정도)를 별도 포트로 살짝 떼어내는 소자로, 실제 송신 전력을 실시간으로 측정하는 피드백 경로(FBRx)를 만드는 데 핵심적으로 쓰인다. 디바이더는 하나의 신호를 여러 경로로 균등하게 나누거나(파워 디바이더), 여러 안테나로 나눠 보내는 데 쓰인다. 두 소자 모두 이상적으로는 무손실이 아니라 정해진 삽입 손실을 가지므로, 이 손실이 전력 예산 계산에 포함되어야 한다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-component-isolator-circulator",
+                      "type":  "Component",
+                      "layer":  "physical",
+                      "name_ko":  "아이솔레이터/써큘레이터",
+                      "name_en":  "Isolator / Circulator",
+                      "description":  "신호가 특정 방향으로만 흐르도록 강제하는 비가역 소자로,써큘레이터는 3개 포트 사이에서 신호를 한 방향으로만 순환시키고, 아이솔레이터는 써큘레이터의 한 포트에 종단 저항을 달아 \u0027한 방향으로만 통과, 반대 방향은 흡수\u0027하는 2포트 소자로 만든 것이다. PA 뒤에 아이솔레이터를 달면 부하(안테나) 쪽에서 반사되어 돌아오는 신호가 PA로 재유입되어 PA를 손상시키거나 불안정하게 만드는 것을 막아준다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-component-antenna",
+                      "type":  "Component",
+                      "layer":  "physical",
+                      "name_ko":  "안테나 (RF 소자 관점)",
+                      "name_en":  "Antenna (as an RF Component)",
+                      "description":  "전기 신호를 전자기파로, 전자기파를 전기 신호로 바꿔주는 변환 소자로, RF 회로 관점에서는 특정 임피던스(대개 50Ω 근방)를 갖는 부하로 취급된다. 실제 안테나의 임피던스는 주파수마다 다르고, 사용자가 손으로 쥐거나 케이스에 다른 물체가 닿으면(그립/디튜닝) 실시간으로 바뀌어 PA가 보는 부하 임피던스가 달라진다. 이 문서의 3GPP/벤더 레이어에 있는 안테나 관련 노드들이 다루는 절차(빔 관리, 스위치 다이버시티 등)는 모두 이 물리적 특성 위에서 동작한다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-component-switch",
+                      "type":  "Component",
+                      "layer":  "physical",
+                      "name_ko":  "RF 스위치",
+                      "name_en":  "RF Switch",
+                      "description":  "여러 신호 경로 중 하나(또는 일부)를 선택적으로 연결/차단하는 소자로, 밴드 전환, 송수신 경로 전환, 안테나 다이버시티 전환 등 경로를 바꾸는 모든 동작의 물리적 실행 지점이다. 이상적인 스위치는 켜진 경로의 삽입 손실이 0이고 꺼진 경로와의 격리도가 무한대여야 하지만, 실제로는 유한한 삽입 손실과 격리도를 가지며 이 값이 전체 경로 손실 예산과 밴드 간 간섭에 영향을 준다. `qc-rffe-control`이 MIPI RFFE로 제어하는 대상이 바로 이 물리 소자다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-p1db",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "1dB 압축점 (P1dB)",
+                      "name_en":  "1dB Compression Point",
+                      "description":  "증폭기의 실제 이득이 저전력 구간의 선형 이득보다 1dB 낮아지는 입력(또는 출력) 전력 레벨로, 증폭기가 선형 동작을 벗어나 압축 영역에 들어가기 시작했다고 보는 실무적 기준점이다. 목표 송신 전력이 P1dB에 가까울수록 왜곡과 인접 채널 누설(ACLR)이 커지므로, PA는 보통 P1dB보다 몇 dB 낮은 전력에서 동작하도록 여유(백오프)를 두고 설계·운용된다. 3GPP가 요구하는 MPR/A-MPR도 결국 이 여유를 표준화된 방식으로 확보하기 위한 규정이다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준 (관련 표준: TS 38.101-1 MPR/전력 허용오차)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-ip3",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "3차 상호변조 IP3",
+                      "name_en":  "Third-Order Intercept Point (IP3)",
+                      "description":  "두 개의 근접한 주파수를 증폭기에 동시에 넣었을 때 생기는 3차 상호변조 왜곡 성분의 세기를 외삽해, 원하는 신호와 왜곡 성분의 세기가 같아진다고 가정한 가상의 입력(또는 출력) 전력 레벨이다. 실제로 그 지점까지 증폭기를 동작시키는 일은 없지만, IP3가 높을수록 같은 입력 전력에서 왜곡 성분이 더 작다는 뜻이라 증폭기·믹서의 선형성을 비교하는 표준 지표로 널리 쓰인다. CA처럼 여러 신호가 같은 PA를 동시에 지나가는 상황에서 IP3가 낮으면 상호변조 왜곡이 눈에 띄게 커진다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-imd",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "상호변조 왜곡 (IMD)",
+                      "name_en":  "Intermodulation Distortion",
+                      "description":  "두 개 이상의 신호가 비선형 소자(PA, 믹서 등)를 함께 지날 때, 각 신호의 주파수의 합·차 조합에 해당하는 원치 않는 새 주파수 성분이 생기는 현상이다. 이 성분이 자신의 수신 대역이나 다른 밴드의 대역과 겹치면 그 자체가 잡음/간섭원이 되며, CA나 EN-DC처럼 여러 캐리어를 동시에 송신하는 조합에서 특히 문제가 된다(이미 `endc2-formula-imd-frequency`에서 계산식을 다룸). IMD는 신호 레벨이 커질수록, 그리고 소자가 P1dB에 가까워질수록 급격히 증가한다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-harmonic",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "고조파",
+                      "name_en":  "Harmonic",
+                      "description":  "원래 신호 주파수의 정수배(2배, 3배, ...)에서 생기는 원치 않는 신호 성분으로, 비선형 소자를 지날 때 필연적으로 함께 만들어진다. 2차 고조파가 다른 밴드의 수신 대역과 겹치면 그 밴드의 감도를 떨어뜨릴 수 있어(하모닉 디센스), 송신 경로의 필터가 고조파를 충분히 억제하도록 설계된다. 3GPP 표준의 스퓨리어스 방사 요구사항 중 상당 부분이 실질적으로 이 고조파 억제 요구를 규정한 것이다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준 (관련 표준: TS 38.101-1 스퓨리어스 방사 한계)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-nf",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "잡음 지수 (Noise Figure)",
+                      "name_en":  "Noise Figure",
+                      "description":  "소자가 신호를 처리하는 과정에서 이상적인 무잡음 소자 대비 신호 대 잡음비(SNR)를 얼마나 악화시키는지를 dB로 나타낸 값이다. 여러 소자가 직렬로 연결된 수신 체인의 전체 잡음 지수는 프리스 공식에 따라 가장 앞단(주로 LNA)의 잡음 지수와 이득에 가장 크게 좌우된다. 수신 감도가 나쁘다는 증상을 진단할 때, 경로 삽입 손실뿐 아니라 LNA의 잡음 지수 자체가 열화되지 않았는지도 함께 봐야 하는 이유가 여기에 있다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준 (관련 표준: TS 38.101-1 수신기 감도/잡음지수 요구사항)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-param-linearity",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "선형성 (총괄 개념)",
+                      "name_en":  "Linearity",
+                      "description":  "입력을 키우면 출력도 정확히 비례해서 커지는 정도를 뜻하며, P1dB·IP3·IMD·ACLR·EVM 등 RF 프론트엔드에서 다루는 왜곡 관련 지표 대부분이 결국 \u0027이 소자/경로가 얼마나 선형에 가깝게 동작하는가\u0027라는 하나의 질문으로 수렴한다. 선형성을 높이려면 PA를 여유 있는(백오프가 큰) 구간에서 동작시켜야 하는데, 이는 효율을 희생하는 트레이드오프라서 3GPP MPR/P-MPR 규정과 벤더의 ET/APT·FBRx 같은 구현 기법들이 모두 \u0027필요한 선형성을 최소한의 효율 손실로 확보\u0027하려는 시도로 볼 수 있다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-mod-iq",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "I/Q 개념",
+                      "name_en":  "I/Q (In-phase/Quadrature)",
+                      "description":  "하나의 반송파를 위상이 90도 차이 나는 두 성분(I: 동상, Q: 직교)으로 나눠 각각 독립적으로 진폭을 실어 보내는 표현 방식으로, 현대 디지털 변조(QAM, PSK 등)가 이 I/Q 평면 위의 점(심볼)으로 데이터를 표현한다. 송수신 체인의 미세한 이득/위상 불균형, LO 위상잡음, PA 비선형성 등 거의 모든 RF 손상이 I/Q 평면 위에서 심볼이 이상적인 위치를 벗어나는 형태로 나타나기 때문에, I/Q는 RF 손상을 정량화하는 공통 언어 역할을 한다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-mod-evm",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "EVM (오류 벡터 크기)",
+                      "name_en":  "Error Vector Magnitude",
+                      "description":  "실제로 송신/수신된 I/Q 심볼이 이상적인 기준 심볼 위치에서 얼마나 벗어났는지를 벡터 오차의 크기로 정량화한 지표로, RF 프론트엔드의 종합 신호 품질을 보여주는 대표적인 스펙이다. PA 비선형성, LO 위상잡음, I/Q 불균형, 필터 왜곡 등 앞서 나온 물리적 손상 원인들이 모두 EVM 저하로 합산되어 나타나며, 변조 차수가 높을수록(256QAM 등) 심볼 간 간격이 좁아 같은 물리적 오차라도 EVM 마진에 더 민감하다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준 (관련 표준: TS 38.101-1 송신기 변조 품질(EVM) 요구사항)",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-mod-papr",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "PAPR (피크 대 평균 전력비)",
+                      "name_en":  "Peak-to-Average Power Ratio",
+                      "description":  "변조된 신호의 순간 최대 전력이 평균 전력보다 얼마나 큰지를 나타내는 값으로, OFDM 기반의 5G NR/LTE 신호는 여러 부반송파가 우연히 동시에 겹치는 순간 순시 전력이 평균보다 훨씬 커지는 구간이 발생해 PAPR이 높은 편이다. PA는 이런 순간 피크에서도 찌그러지지 않도록 평균 전력보다 훨씬 여유 있는(백오프) 지점에서 동작해야 하므로, PAPR이 높을수록 같은 평균 출력을 내는 데 필요한 백오프가 커지고 효율이 떨어진다. ET/APT 같은 전원 트래킹 기법은 이 백오프 손실을 줄이기 위한 구현이다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
+                  },
+                  {
+                      "id":  "phy-mod-constellation",
+                      "type":  "Parameter",
+                      "layer":  "physical",
+                      "name_ko":  "성상도와 변조 차수별 민감도",
+                      "name_en":  "Constellation and Modulation-Order Sensitivity",
+                      "description":  "I/Q 평면 위에 변조 방식이 쓰는 심볼 위치들을 점으로 찍어 보여주는 도표로, QPSK처럼 심볼 수가 적으면 점 사이 간격이 넓어 왜곡에 관대하지만 256QAM처럼 심볼 수가 많으면 점 사이 간격이 좁아 같은 크기의 잡음·왜곡에도 잘못된 심볼로 판정될 확률(오류율)이 크게 높아진다. 그래서 네트워크는 무선 환경이 좋을 때만 높은 변조 차수를 스케줄링하며, RF 프론트엔드의 선형성이 나쁘면 스펙상 가능한 변조 차수를 실제로는 못 쓰는 형태로 처리량 손실이 나타난다.",
+                      "specRef":  "일반 RF 회로 이론 — 3GPP 비표준",
+                      "verified":  false
                   }
               ]
 }

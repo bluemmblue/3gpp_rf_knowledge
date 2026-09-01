@@ -1,7 +1,7 @@
 export interface GraphNode {
   id: string;
-  type: 'Procedure' | 'Message' | 'Parameter' | 'Formula' | 'Symptom' | 'Implementation';
-  layer: 'base' | 'application' | 'vendor';
+  type: 'Procedure' | 'Message' | 'Parameter' | 'Formula' | 'Symptom' | 'Implementation' | 'Component';
+  layer: 'base' | 'application' | 'vendor' | 'physical';
   name_ko: string;
   name_en: string;
   description: string;
