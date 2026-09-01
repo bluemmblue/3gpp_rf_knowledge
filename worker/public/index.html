@@ -18,12 +18,6 @@
     <div class="layer-toggle">
       <label><input type="checkbox" id="toggle-all-labels" checked> 라벨 모두 표시</label>
     </div>
-    <div class="issue-section" id="issue-section">
-      <button id="issue-toggle" class="issue-toggle" aria-expanded="true" aria-controls="issue-chips">
-        <span class="caret">▾</span> 이슈 키워드 <span id="issue-count" class="issue-count"></span>
-      </button>
-      <div class="issue-chips" id="issue-chips"></div>
-    </div>
   </header>
 
   <main>
@@ -53,6 +47,7 @@
       <div class="tabs" role="tablist">
         <button class="tab active" data-tab="chat" role="tab" aria-selected="true">질의응답 챗봇</button>
         <button class="tab" data-tab="node" role="tab" aria-selected="false">노드 정보</button>
+        <button class="tab" data-tab="issue" role="tab" aria-selected="false">이슈 키워드 <span id="issue-count" class="issue-count"></span></button>
       </div>
 
       <section class="tab-panel active" data-panel="chat">
@@ -71,6 +66,11 @@
 
       <section class="tab-panel" data-panel="node">
         <div id="node-detail" class="node-detail">그래프에서 노드를 클릭하면 상세 정보가 표시됩니다.</div>
+      </section>
+
+      <section class="tab-panel" data-panel="issue">
+        <input id="issue-filter" type="text" placeholder="이슈 키워드 검색...">
+        <div class="issue-chips" id="issue-chips"></div>
       </section>
     </aside>
   </main>

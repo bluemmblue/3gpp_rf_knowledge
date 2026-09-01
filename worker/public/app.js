@@ -41,27 +41,32 @@ async function loadGraph() {
   renderIssueChips();
 }
 
+let allSymptoms = [];
+
 function renderIssueChips() {
-  const container = document.getElementById('issue-chips');
-  const symptoms = graph.nodes
+  allSymptoms = graph.nodes
     .filter((n) => n.type === 'Symptom')
     .sort((a, b) => a.name_ko.localeCompare(b.name_ko, 'ko'));
-  container.innerHTML = symptoms
+  document.getElementById('issue-count').textContent = `(${allSymptoms.length})`;
+  filterIssueChips();
+}
+
+function filterIssueChips() {
+  const container = document.getElementById('issue-chips');
+  const q = document.getElementById('issue-filter').value.trim().toLowerCase();
+  const filtered = q
+    ? allSymptoms.filter((n) => n.name_ko.toLowerCase().includes(q) || n.name_en.toLowerCase().includes(q))
+    : allSymptoms;
+  container.innerHTML = filtered
     .map((n) => `<button class="issue-chip" data-node-id="${n.id}">${escapeHtml(n.name_ko)}</button>`)
     .join('');
   container.querySelectorAll('.issue-chip').forEach((btn) => {
     btn.addEventListener('click', () => selectNode(btn.dataset.nodeId));
   });
-  document.getElementById('issue-count').textContent = `(${symptoms.length})`;
   syncIssueChips([...chatFocusIds]);
 }
 
-document.getElementById('issue-toggle').addEventListener('click', () => {
-  const section = document.getElementById('issue-section');
-  const collapsed = section.classList.toggle('collapsed');
-  document.getElementById('issue-toggle').setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-  if (cy) cy.resize();
-});
+document.getElementById('issue-filter').addEventListener('input', filterIssueChips);
 
 function selectNode(id) {
   const nodeData = graph.nodes.find((n) => n.id === id);
